@@ -13,7 +13,10 @@ void main() {
     MaterialApp(
       home: Scaffold(
         body: Center(
-          child: dung.getMiniMap(20),
+          // child: dung.getMiniMap(20),
+          child: Column(
+            children: [dung.getMiniMap(20), dung.getRoom()],
+          ),
         ),
       ),
     ),

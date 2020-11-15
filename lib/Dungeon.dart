@@ -126,4 +126,10 @@ class Dungeon {
       ),
     );
   }
+
+  Container getRoom() {
+    print("getting room");
+    var currentRoom = rooms.any((i) => i.current) ? rooms.firstWhere((element) => element.current) : rooms.first;
+    return currentRoom.renderRoom();
+  }
 }
