@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-
 import 'Room.dart';
 
 class Dungeon {
@@ -12,7 +11,7 @@ class Dungeon {
 
   generate(int roomCount) {
     if (rooms.isNotEmpty) rooms.clear();
-    rooms.add(new Room(0, 0));
+    rooms.add(new Room(0, 0, 3));
     int posX = 0;
     int posY = 0;
 
@@ -32,7 +31,7 @@ class Dungeon {
           posX++;
           break;
       }
-      if (!rooms.any((i) => i.x == posX && i.y == posY)) rooms.add(new Room(posX, posY));
+      if (!rooms.any((i) => i.x == posX && i.y == posY)) rooms.add(new Room(posX, posY, 3));
     }
     int minX = rooms.map<int>((e) => e.x).reduce(min);
     int minY = rooms.map<int>((e) => e.y).reduce(min);
@@ -70,9 +69,7 @@ class Dungeon {
     for (int y = 0; y <= maxY; y++) {
       List<Widget> w = new List<Widget>();
       for (int x = 0; x <= maxX; x++) {
-        //var c = rooms.any((r) => r.x == x && r.y == y) ? Colors.red : Colors.transparent;
         var room = rooms.firstWhere((r) => r.x == x && r.y == y, orElse: () => null);
-
         var c = room == null
             ? Colors.transparent
             : room.current
@@ -102,6 +99,31 @@ class Dungeon {
       height: (maxY + 1) * roomSize,
       width: (maxX + 1) * roomSize,
       child: Column(children: rows),
+    );
+  }
+
+  Container getMiniMap(double squareSize) {
+    var currentRoom = rooms.any((i) => i.current) ? rooms.firstWhere((element) => element.current) : rooms.first;
+    double miniMapSize = 4 * squareSize;
+    double offsetConstant = 1.5 * squareSize;
+    var mapOffset = Matrix4.translationValues(-(squareSize * currentRoom.x - offsetConstant), -(squareSize * currentRoom.y - offsetConstant), 0);
+
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.black,
+            width: 3,
+          ),
+          color: Colors.transparent),
+      height: miniMapSize,
+      width: miniMapSize,
+      child: InteractiveViewer(
+        transformationController: TransformationController(mapOffset),
+        boundaryMargin: EdgeInsets.all(offsetConstant),
+        constrained: false,
+        scaleEnabled: false,
+        child: UnconstrainedBox(clipBehavior: Clip.hardEdge, child: drawGrid(squareSize)),
+      ),
     );
   }
 }
