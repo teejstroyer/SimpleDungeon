@@ -33,7 +33,7 @@ class Dungeon {
       if (!rooms.any((i) => i.x == posX && i.y == posY)) rooms.add(new Room(posX, posY));
     }
     int minX = rooms.map<int>((e) => e.x).reduce(min);
-    int minY = rooms.map<int>((e) => e.x).reduce(min);
+    int minY = rooms.map<int>((e) => e.y).reduce(min);
 
     for (Room room in rooms) {
       if (minX < 0)
@@ -48,7 +48,7 @@ class Dungeon {
 
   String drawGrid(String fillChar, String emptyChar) {
     int maxX = rooms.map<int>((e) => e.x).reduce(max);
-    int maxY = rooms.map<int>((e) => e.x).reduce(max);
+    int maxY = rooms.map<int>((e) => e.y).reduce(max);
     var g = '';
     for (int y = 0; y <= maxY; y++) {
       //String row = '';

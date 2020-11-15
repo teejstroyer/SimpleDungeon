@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 
 void main() {
   var dung = Dungeon();
-  dung.generateRooms(500);
+  dung.generateRooms(50);
+  for (var r in dung.rooms) {
+    print("x: ${r.x}, y:${r.y}");
+  }
   var g = dung.drawGrid('#', '_');
   runApp(MaterialApp(
       home: Scaffold(
