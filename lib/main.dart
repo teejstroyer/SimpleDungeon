@@ -1,80 +1,36 @@
+import 'dart:math';
+
 import 'package:SimpleDungeon/Dungeon.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   var dung = Dungeon();
-  dung.generateRooms(50);
-  for (var r in dung.rooms) {
-    print("x: ${r.x}, y:${r.y}");
-  }
-  var g = dung.drawGrid('#', '_');
-  runApp(MaterialApp(
+  dung.generate(10);
+  dung.rooms[Random().nextInt(dung.rooms.length)].current = true;
+  dung.rooms[Random().nextInt(dung.rooms.length)].visited = true;
+  var squareSize = 90.0;
+  var currentRoom = dung.rooms.firstWhere((element) => element.current);
+  var mapOffset = Matrix4.translationValues(-(squareSize * currentRoom.x - squareSize / 2), -(squareSize * currentRoom.y - squareSize / 2), 0);
+
+  runApp(
+    MaterialApp(
       home: Scaffold(
-    body: Center(
-      child: Container(
-        color: Colors.green,
-        child: Text(g),
-      ),
-    ),
-  )));
-}
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        body: Center(
+          child: Container(
+              decoration: BoxDecoration(border: Border.all(color: Colors.black), color: Colors.transparent),
+              height: 200,
+              width: 200,
+              child: InteractiveViewer(
+                transformationController: TransformationController(mapOffset),
+                boundaryMargin: EdgeInsets.all(0),
+                constrained: false,
+                scaleEnabled: true,
+                minScale: 0.01,
+                maxScale: 4,
+                child: UnconstrainedBox(clipBehavior: Clip.hardEdge, child: dung.drawGrid(squareSize)),
+              )),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
+    ),
+  );
 }

@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:flutter/material.dart';
+
 import 'Room.dart';
 
 class Dungeon {
@@ -8,7 +10,7 @@ class Dungeon {
     rooms = new List<Room>();
   }
 
-  generateRooms(int roomCount) {
+  generate(int roomCount) {
     if (rooms.isNotEmpty) rooms.clear();
     rooms.add(new Room(0, 0));
     int posX = 0;
@@ -46,7 +48,7 @@ class Dungeon {
     }
   }
 
-  String drawGrid(String fillChar, String emptyChar) {
+  String gridToString(String fillChar, String emptyChar) {
     int maxX = rooms.map<int>((e) => e.x).reduce(max);
     int maxY = rooms.map<int>((e) => e.y).reduce(max);
     var g = '';
@@ -58,5 +60,48 @@ class Dungeon {
       g += '\n';
     }
     return g;
+  }
+
+  Widget drawGrid(double roomSize) {
+    int maxX = rooms.map<int>((e) => e.x).reduce(max);
+    int maxY = rooms.map<int>((e) => e.y).reduce(max);
+
+    List<Row> rows = new List<Row>();
+    for (int y = 0; y <= maxY; y++) {
+      List<Widget> w = new List<Widget>();
+      for (int x = 0; x <= maxX; x++) {
+        //var c = rooms.any((r) => r.x == x && r.y == y) ? Colors.red : Colors.transparent;
+        var room = rooms.firstWhere((r) => r.x == x && r.y == y, orElse: () => null);
+
+        var c = room == null
+            ? Colors.transparent
+            : room.current
+                ? Colors.yellow
+                : room.visited
+                    ? Colors.green
+                    : Colors.red;
+
+        w.add(
+          new Container(
+            height: roomSize,
+            width: roomSize,
+            child: Center(
+              child: Container(
+                color: c,
+                height: roomSize - 1,
+                width: roomSize - 1,
+              ),
+            ),
+          ),
+        );
+      }
+      rows.add(new Row(children: w));
+    }
+
+    return Container(
+      height: (maxY + 1) * roomSize,
+      width: (maxX + 1) * roomSize,
+      child: Column(children: rows),
+    );
   }
 }
