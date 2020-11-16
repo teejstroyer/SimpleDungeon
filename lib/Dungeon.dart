@@ -11,7 +11,7 @@ class Dungeon {
 
   generate(int roomCount) {
     if (rooms.isNotEmpty) rooms.clear();
-    rooms.add(new Room(0, 0, 3));
+    rooms.add(new Room(0, 0, 10));
     int posX = 0;
     int posY = 0;
 
@@ -31,7 +31,7 @@ class Dungeon {
           posX++;
           break;
       }
-      if (!rooms.any((i) => i.x == posX && i.y == posY)) rooms.add(new Room(posX, posY, 3));
+      if (!rooms.any((i) => i.x == posX && i.y == posY)) rooms.add(new Room(posX, posY, 10));
     }
     int minX = rooms.map<int>((e) => e.x).reduce(min);
     int minY = rooms.map<int>((e) => e.y).reduce(min);
@@ -77,7 +77,6 @@ class Dungeon {
                 : room.visited
                     ? Colors.green
                     : Colors.red;
-
         w.add(
           new Container(
             height: roomSize,
@@ -94,7 +93,6 @@ class Dungeon {
       }
       rows.add(new Row(children: w));
     }
-
     return Container(
       height: (maxY + 1) * roomSize,
       width: (maxX + 1) * roomSize,
@@ -130,6 +128,43 @@ class Dungeon {
   Container getRoom() {
     print("getting room");
     var currentRoom = rooms.any((i) => i.current) ? rooms.firstWhere((element) => element.current) : rooms.first;
-    return currentRoom.renderRoom();
+    return renderRoom(currentRoom);
   }
+
+  Container renderRoom(Room room) {
+    var grid = List<Expanded>();
+    List<List<Expanded>> rows = [List<Expanded>()];
+
+    int rowSum = 0;
+    for (var entity in room.entities) {
+      if (rowSum >= room.entityCount) {
+        grid.add(Expanded(flex: rowSum ~/ rows[rows.length - 1].length, child: Row(children: rows[rows.length - 1])));
+        rowSum = 0;
+        rows.add(List<Expanded>());
+      }
+      rowSum += entity.priority;
+      rows[rows.length - 1].add(
+        Expanded(
+            flex: entity.priority,
+            child: Container(
+              color: randomColor(),
+              child: Container(child: Center(child: Text(entity.priority.toString()))),
+            )),
+      );
+    }
+    return Container(height: 500, width: 500, child: Column(children: grid));
+  }
+
+  Container mainGameBox() {
+    // TODO
+    // each directional movement button should only appear if theres a room in that direction
+    /*
+    *           UP
+    * LEFT renderRoom() RIGHT
+    *          DOWN
+    */
+    return Container();
+  }
+
+  Color randomColor() => Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
 }
