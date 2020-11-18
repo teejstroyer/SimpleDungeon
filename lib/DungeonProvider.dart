@@ -23,7 +23,10 @@ class DungeonProvider extends ChangeNotifier {
     if (newCurr != null) {
       newCurr.current = true;
       var curr = getCurrentRoom();
-      if (curr != null) curr.current = false;
+      if (curr != null) {
+        curr.current = false;
+        if (curr.visited == false) curr.visited = true;
+      }
       _currentRoom = newCurr;
       notifyListeners();
     }
