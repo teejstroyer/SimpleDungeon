@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:SimpleDungeon/FancyButton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'DungeonProvider.dart';
@@ -21,8 +22,12 @@ class CurrentRoom extends StatelessWidget {
       rows[rows.length - 1].add(
         Expanded(
             flex: entity.priority,
-            child: Container(
+            child: FancyButton(
               color: randomColor(),
+              size: 25,
+              horizontalPadding: 3.5,
+              verticalPadding: 3.5,
+              onPressed: () => {}, //Update currently selected tile
               child: Container(child: Center(child: Text(entity.priority.toString()))),
             )),
       );

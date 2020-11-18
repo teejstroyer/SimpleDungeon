@@ -43,27 +43,28 @@ class Game extends StatelessWidget {
                       var gameCenterSize = constraint.biggest.shortestSide - 100;
                       return Center(
                         child: Container(
-                          color: Colors.orange,
                           width: gameContainerSize,
                           height: gameContainerSize,
-                          child: Column(children: [
-                            MoveButton(direction: Direction.UP),
-                            Container(
-                              height: gameCenterSize,
-                              child: Row(
-                                children: [
-                                  MoveButton(direction: Direction.LEFT),
-                                  Container(
-                                    height: constraint.biggest.shortestSide - 10,
-                                    width: gameCenterSize,
-                                    child: CurrentRoom(),
-                                  ),
-                                  MoveButton(direction: Direction.RIGHT),
-                                ],
+                          child: Column(
+                            children: [
+                              MoveButton(direction: Direction.UP),
+                              Container(
+                                height: gameCenterSize,
+                                child: Row(
+                                  children: [
+                                    MoveButton(direction: Direction.LEFT),
+                                    Container(
+                                      height: constraint.biggest.shortestSide - 10,
+                                      width: gameCenterSize,
+                                      child: CurrentRoom(),
+                                    ),
+                                    MoveButton(direction: Direction.RIGHT),
+                                  ],
+                                ),
                               ),
-                            ),
-                            MoveButton(direction: Direction.DOWN)
-                          ]),
+                              MoveButton(direction: Direction.DOWN)
+                            ],
+                          ),
                         ),
                       );
                     },

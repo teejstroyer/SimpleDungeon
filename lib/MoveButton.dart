@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'DungeonProvider.dart';
+import 'FancyButton.dart';
 
 class MoveButton extends StatelessWidget {
   final Direction direction;
@@ -26,13 +26,12 @@ class MoveButton extends StatelessWidget {
     }
 
     return Expanded(
-      child: FlatButton(
-        child: Container(
-          child: Center(
-            child: Icon(icon),
-          ),
-        ),
-        color: Colors.blue,
+      child: FancyButton(
+        child: Container(child: Center(child: Icon(icon))),
+        size: 25,
+        color: Colors.red,
+        horizontalPadding: 5,
+        verticalPadding: 5,
         onPressed: () => Provider.of<DungeonProvider>(context, listen: false).moveInDirection(direction),
       ),
     );
