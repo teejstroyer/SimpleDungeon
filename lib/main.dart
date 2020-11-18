@@ -1,24 +1,15 @@
-import 'dart:math';
-
-import 'package:SimpleDungeon/Dungeon.dart';
+import 'package:SimpleDungeon/DungeonProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'Game.dart';
 
 void main() {
-  var dung = Dungeon();
-  dung.generate(10);
-  dung.rooms[Random().nextInt(dung.rooms.length)].current = true;
-  dung.rooms[Random().nextInt(dung.rooms.length)].visited = true;
-
   runApp(
-    MaterialApp(
-      home: Scaffold(
-        body: Center(
-          // child: dung.getMiniMap(20),
-          child: Column(
-            children: [dung.getMiniMap(20), dung.getRoom()],
-          ),
-        ),
-      ),
+    MultiProvider(
+      child: new Game(),
+      providers: [
+        ChangeNotifierProvider(create: (context) => DungeonProvider()),
+      ],
     ),
   );
 }
