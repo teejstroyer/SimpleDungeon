@@ -9,30 +9,36 @@ class MoveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool enabled = true; //Provider.of<DungeonProvider>(context, listen: true).isDirectionAvailable(direction);
     IconData icon;
     switch (direction) {
       case Direction.LEFT:
-        icon = Icons.arrow_left;
+        icon = Icons.keyboard_arrow_left;
         break;
       case Direction.RIGHT:
-        icon = Icons.arrow_right;
+        icon = Icons.keyboard_arrow_right;
         break;
       case Direction.UP:
-        icon = Icons.arrow_upward;
+        icon = Icons.keyboard_arrow_up;
         break;
       case Direction.DOWN:
-        icon = Icons.arrow_downward;
+        icon = Icons.keyboard_arrow_down;
         break;
     }
 
     return Expanded(
       child: FancyButton(
-        child: Container(child: Center(child: Icon(icon))),
-        size: 25,
-        color: Colors.red,
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return Container(child: Center(child: Icon(icon, size: constraints.biggest.shortestSide, color: Color.fromARGB(100, 0, 0, 0))));
+          },
+        ),
+        size: 50,
+        color: enabled ? Colors.red : Colors.grey,
         horizontalPadding: 5,
         verticalPadding: 5,
-        onPressed: () => Provider.of<DungeonProvider>(context, listen: false).moveInDirection(direction),
+        onPressed: () => enabled ? Provider.of<DungeonProvider>(context, listen: false).moveInDirection(direction) : null,
+        disabled: !enabled,
       ),
     );
   }

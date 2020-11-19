@@ -10,15 +10,16 @@ class FancyButton extends StatefulWidget {
     this.onPressed,
     this.horizontalPadding = 0,
     this.verticalPadding = 0,
+    this.disabled = false,
   }) : super(key: key);
 
-  final Widget child;
   final Color color;
   final Duration duration;
   final VoidCallback onPressed;
-
-  final double size;
+  final Widget child;
+  final bool disabled;
   final double horizontalPadding;
+  final double size;
   final double verticalPadding;
 
   @override
@@ -111,51 +112,35 @@ class _FancyButtonState extends State<FancyButton> with TickerProviderStateMixin
                 borderRadius: radius,
               ),
             ),
-            AnimatedBuilder(
-              animation: _pressedAnimation,
-              builder: (BuildContext context, Widget child) {
-                return Transform.translate(
-                  offset: Offset(0.0, _pressedAnimation.value),
-                  child: child,
-                );
-              },
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: radius,
+            widget.disabled
+                ? Container()
+                : AnimatedBuilder(
+                    animation: _pressedAnimation,
+                    builder: (BuildContext context, Widget child) {
+                      return Transform.translate(offset: Offset(0.0, _pressedAnimation.value), child: child);
+                    },
                     child: Stack(
+                      clipBehavior: Clip.none,
                       children: <Widget>[
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: _hslRelativeColor(l: 0.06),
-                            borderRadius: radius,
-                          ),
-                          child: SizedBox.expand(),
-                        ),
-                        Transform.translate(
-                          offset: Offset(0.0, vertPadding * 2),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: _hslRelativeColor(),
-                              borderRadius: radius,
-                            ),
-                            child: SizedBox.expand(),
+                        ClipRRect(
+                          borderRadius: radius,
+                          child: Stack(
+                            children: <Widget>[
+                              DecoratedBox(decoration: BoxDecoration(color: _hslRelativeColor(l: 0.06), borderRadius: radius), child: SizedBox.expand()),
+                              Transform.translate(
+                                offset: Offset(0.0, vertPadding * 2),
+                                child: DecoratedBox(decoration: BoxDecoration(color: _hslRelativeColor(), borderRadius: radius), child: SizedBox.expand()),
+                              ),
+                            ],
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: vertPadding, horizontal: horzPadding),
+                          child: widget.child,
+                        )
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: vertPadding,
-                      horizontal: horzPadding,
-                    ),
-                    child: widget.child,
-                  )
-                ],
-              ),
-            ),
           ],
         ),
       ),

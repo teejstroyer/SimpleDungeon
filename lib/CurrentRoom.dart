@@ -24,7 +24,7 @@ class CurrentRoom extends StatelessWidget {
             flex: entity.priority,
             child: FancyButton(
               color: randomColor(),
-              size: 25,
+              size: 45,
               horizontalPadding: 3.5,
               verticalPadding: 3.5,
               onPressed: () => {}, //Update currently selected tile

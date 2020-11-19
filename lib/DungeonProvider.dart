@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:SimpleDungeon/CurrentRoom.dart';
 import 'package:flutter/material.dart';
 import 'Room.dart';
 
@@ -17,6 +18,26 @@ class DungeonProvider extends ChangeNotifier {
   List<Room> get rooms => [..._rooms].toList();
 
   Room getCurrentRoom() => _currentRoom;
+
+  bool isDirectionAvailable(Direction direction) {
+    int x = _currentRoom.x, y = _currentRoom.y;
+    switch (direction) {
+      case Direction.LEFT:
+        x--;
+        break;
+      case Direction.RIGHT:
+        x++;
+        break;
+      case Direction.UP:
+        y--;
+        break;
+      case Direction.DOWN:
+        y++;
+        break;
+    }
+    var neighbor = _rooms.firstWhere((i) => i.x == x && i.y == y, orElse: () => null);
+    return neighbor != null && (neighbor.visited /*|| _current.cleared*/);
+  }
 
   void setCurrentRoom(int x, int y) {
     var newCurr = _rooms.firstWhere((i) => i.x == x && i.y == y, orElse: () => null);
