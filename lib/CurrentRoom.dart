@@ -21,15 +21,21 @@ class CurrentRoom extends StatelessWidget {
       rowSum += entity.priority;
       rows[rows.length - 1].add(
         Expanded(
-            flex: entity.priority,
-            child: FancyButton(
-              color: randomColor(),
-              size: 45,
-              horizontalPadding: 3.5,
-              verticalPadding: 3.5,
-              onPressed: () => {}, //Update currently selected tile
-              child: Container(child: Center(child: Text(entity.priority.toString()))),
-            )),
+          flex: entity.priority,
+          child: FancyButton(
+            color: randomColor(),
+            size: 45,
+            horizontalPadding: 3.5,
+            verticalPadding: 3.5,
+            onPressed: () => {}, //Update currently selected tile
+            child: Container(child: Center(child: LayoutBuilder(builder: (context, constraints) {
+              return Icon(
+                Icons.person,
+                size: constraints.biggest.shortestSide,
+              );
+            }))),
+          ),
+        ),
       );
     }
     return Column(children: grid);

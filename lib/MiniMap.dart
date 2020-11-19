@@ -14,11 +14,11 @@ class MiniMap extends StatelessWidget {
     var rooms = Provider.of<DungeonProvider>(context, listen: true).rooms;
     var currentRoom = Provider.of<DungeonProvider>(context, listen: false).getCurrentRoom();
     double squareSize = miniMapSize / 4;
-    double offsetConstant = 1.5 * squareSize;
+    double offsetConstant = 1.05 * squareSize;
     var mapOffset = Matrix4.translationValues(-(squareSize * currentRoom.x - offsetConstant), -(squareSize * currentRoom.y - offsetConstant), 0);
 
     return Container(
-      decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 3), color: Colors.transparent),
+      decoration: BoxDecoration(border: Border.all(color: Colors.blueGrey, width: 10), color: Colors.white),
       height: miniMapSize,
       width: miniMapSize,
       child: InteractiveViewer(
