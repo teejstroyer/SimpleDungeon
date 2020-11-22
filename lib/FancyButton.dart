@@ -126,7 +126,7 @@ class _FancyButtonState extends State<FancyButton> with TickerProviderStateMixin
                           borderRadius: radius,
                           child: Stack(
                             children: <Widget>[
-                              DecoratedBox(decoration: BoxDecoration(color: _hslRelativeColor(l: 0.06), borderRadius: radius), child: SizedBox.expand()),
+                              DecoratedBox(decoration: BoxDecoration(color: _hslRelativeColor(l: 0.03), borderRadius: radius), child: SizedBox.expand()),
                               Transform.translate(
                                 offset: Offset(0.0, vertPadding * 2),
                                 child: DecoratedBox(decoration: BoxDecoration(color: _hslRelativeColor(), borderRadius: radius), child: SizedBox.expand()),

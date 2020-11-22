@@ -1,6 +1,4 @@
 import 'dart:math';
-
-import 'package:SimpleDungeon/CurrentRoom.dart';
 import 'package:flutter/material.dart';
 import 'Room.dart';
 

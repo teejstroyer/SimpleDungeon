@@ -1,5 +1,7 @@
 import 'package:SimpleDungeon/CurrentRoom.dart';
+import 'package:SimpleDungeon/GameProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'DungeonProvider.dart';
 import 'MiniMap.dart';
 import 'MoveButton.dart';
@@ -14,18 +16,17 @@ class Game extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Colors.grey, Colors.deepOrange, Colors.deepPurple, Colors.black],
+              colors: [Colors.deepPurple.shade800, Colors.deepPurple.shade400, Colors.deepPurple.shade900],
               tileMode: TileMode.repeated, // repeats the gradient over the canvas
             ),
           ),
           child: SafeArea(
             child: Column(
               children: [
-                getPlayerStats(),
+                PlayerStats(),
                 getGameInfo(),
                 getCenterView(),
                 //Will be where game roll mechanic etc is
-                Expanded(flex: 1, child: Container(color: Colors.red)),
               ],
             ),
           ),
@@ -36,8 +37,8 @@ class Game extends StatelessWidget {
 
   Container getGameInfo() {
     return Container(
-      padding: EdgeInsets.all(5),
-      height: 100,
+      padding: EdgeInsets.all(10),
+      height: 120,
       child: Row(
         children: [
           Expanded(
@@ -51,14 +52,6 @@ class Game extends StatelessWidget {
           _getMiniMap()
         ],
       ),
-    );
-  }
-
-  Container getPlayerStats() {
-    return Container(
-      height: 75,
-      color: Colors.amber,
-      child: Center(child: Text('Player Stats')),
     );
   }
 
@@ -106,5 +99,24 @@ class Game extends StatelessWidget {
         miniMapSize: constraint.biggest.shortestSide,
       );
     });
+  }
+}
+
+class PlayerStats extends StatelessWidget {
+  const PlayerStats({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var player = Provider.of<GameProvider>(context, listen: true).player;
+    return Row(
+      children: [
+        CircleAvatar(child: Text(player.level.toString())),
+        Container(
+          height: 75,
+          color: Colors.amber,
+          child: Center(child: Text(player.attack.toString())),
+        ),
+      ],
+    );
   }
 }

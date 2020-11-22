@@ -1,6 +1,9 @@
 class Entity {
   EntityType entityType;
   int priority;
+  int level;
+  int attack;
+  int defense;
 }
 
-enum EntityType { Chest, Dragon, Goblin }
+enum EntityType { Player, Chest, Dragon, Goblin }
