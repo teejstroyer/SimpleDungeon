@@ -1,4 +1,4 @@
-import 'package:SimpleDungeon/Entitiy.dart';
+import 'package:SimpleDungeon/Entity.dart';
 import 'dart:math';
 
 class Room {
@@ -19,9 +19,11 @@ class Room {
 
   void generateEntities(bool hasBoss) {
     for (int i = 0; i < entityCount; i++) {
-      var entity = Entity();
-      entity.entityType = EntityType.Chest;
+      // var entity = Entity();
+      // entity.entityType = EntityType.Chest;
+      var entity = Entity.asEnemy(1, EntityType.Rat, false);
       entity.priority = Random().nextInt(entityCount) + 1; //Priorities will be set later by entity level etc etc
+
       this.entities.add(entity);
     }
   }

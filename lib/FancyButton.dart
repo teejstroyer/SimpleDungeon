@@ -1,3 +1,4 @@
+import 'package:SimpleDungeon/Entity.dart';
 import 'package:flutter/material.dart';
 
 class FancyButton extends StatefulWidget {
@@ -6,6 +7,7 @@ class FancyButton extends StatefulWidget {
     @required this.child,
     @required this.size,
     @required this.color,
+    this.entity,
     this.duration = const Duration(milliseconds: 160),
     this.onPressed,
     this.horizontalPadding = 0,
@@ -21,6 +23,7 @@ class FancyButton extends StatefulWidget {
   final double horizontalPadding;
   final double size;
   final double verticalPadding;
+  final Entity entity;
 
   @override
   _FancyButtonState createState() => _FancyButtonState();
@@ -76,6 +79,7 @@ class _FancyButtonState extends State<FancyButton> with TickerProviderStateMixin
   void _onTapUp(_) {
     if (widget.onPressed != null) {
       _downTicker.whenComplete(() {
+        print("Tapped " + widget.entity.priority.toString() + " " + widget.entity.entityType.toString());
         _animationController.animateTo(0.0);
         widget.onPressed?.call();
       });
@@ -126,10 +130,12 @@ class _FancyButtonState extends State<FancyButton> with TickerProviderStateMixin
                           borderRadius: radius,
                           child: Stack(
                             children: <Widget>[
-                              DecoratedBox(decoration: BoxDecoration(color: _hslRelativeColor(l: 0.06), borderRadius: radius), child: SizedBox.expand()),
+                              DecoratedBox(
+                                  decoration: BoxDecoration(color: _hslRelativeColor(l: 0.06), borderRadius: radius), child: SizedBox.expand()),
                               Transform.translate(
                                 offset: Offset(0.0, vertPadding * 2),
-                                child: DecoratedBox(decoration: BoxDecoration(color: _hslRelativeColor(), borderRadius: radius), child: SizedBox.expand()),
+                                child: DecoratedBox(
+                                    decoration: BoxDecoration(color: _hslRelativeColor(), borderRadius: radius), child: SizedBox.expand()),
                               ),
                             ],
                           ),

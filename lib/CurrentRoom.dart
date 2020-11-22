@@ -23,6 +23,7 @@ class CurrentRoom extends StatelessWidget {
         Expanded(
           flex: entity.priority,
           child: FancyButton(
+            entity: entity,
             color: randomColor(),
             size: 45,
             horizontalPadding: 3.5,
