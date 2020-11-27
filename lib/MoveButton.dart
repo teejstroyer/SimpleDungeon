@@ -9,7 +9,7 @@ class MoveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool enabled = true; //Provider.of<DungeonProvider>(context, listen: true).isDirectionAvailable(direction);
+    bool enabled = Provider.of<DungeonProvider>(context, listen: true).isDirectionAvailable(direction);
     IconData icon;
     switch (direction) {
       case Direction.LEFT:

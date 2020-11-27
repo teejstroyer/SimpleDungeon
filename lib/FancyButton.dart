@@ -113,36 +113,44 @@ class _FancyButtonState extends State<FancyButton> with TickerProviderStateMixin
               ),
             ),
             widget.disabled
-                ? Container()
-                : AnimatedBuilder(
-                    animation: _pressedAnimation,
-                    builder: (BuildContext context, Widget child) {
-                      return Transform.translate(offset: Offset(0.0, _pressedAnimation.value), child: child);
-                    },
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: radius,
-                          child: Stack(
-                            children: <Widget>[
-                              DecoratedBox(decoration: BoxDecoration(color: _hslRelativeColor(l: 0.03), borderRadius: radius), child: SizedBox.expand()),
-                              Transform.translate(
-                                offset: Offset(0.0, vertPadding * 2),
-                                child: DecoratedBox(decoration: BoxDecoration(color: _hslRelativeColor(), borderRadius: radius), child: SizedBox.expand()),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: vertPadding, horizontal: horzPadding),
-                          child: widget.child,
-                        )
-                      ],
-                    ),
-                  ),
+                ? Container(
+                    child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: vertPadding, horizontal: horzPadding),
+                    child: widget.child,
+                  ))
+                : buildAnimatedBuilder(radius, vertPadding, horzPadding),
           ],
         ),
+      ),
+    );
+  }
+
+  AnimatedBuilder buildAnimatedBuilder(BorderRadius radius, double vertPadding, double horzPadding) {
+    return AnimatedBuilder(
+      animation: _pressedAnimation,
+      builder: (BuildContext context, Widget child) {
+        return Transform.translate(offset: Offset(0.0, _pressedAnimation.value), child: child);
+      },
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: radius,
+            child: Stack(
+              children: <Widget>[
+                DecoratedBox(decoration: BoxDecoration(color: _hslRelativeColor(l: 0.03), borderRadius: radius), child: SizedBox.expand()),
+                Transform.translate(
+                  offset: Offset(0.0, vertPadding * 2),
+                  child: DecoratedBox(decoration: BoxDecoration(color: _hslRelativeColor(), borderRadius: radius), child: SizedBox.expand()),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: vertPadding, horizontal: horzPadding),
+            child: widget.child,
+          )
+        ],
       ),
     );
   }

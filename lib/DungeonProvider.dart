@@ -34,7 +34,8 @@ class DungeonProvider extends ChangeNotifier {
         break;
     }
     var neighbor = _rooms.firstWhere((i) => i.x == x && i.y == y, orElse: () => null);
-    return neighbor != null && (neighbor.visited /*|| _current.cleared*/);
+    return neighbor != null; // && (neighbor.visited || _current.cleared);
+    ;
   }
 
   void setCurrentRoom(int x, int y) {
