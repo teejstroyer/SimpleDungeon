@@ -1,8 +1,8 @@
 import 'dart:math';
-import 'package:SimpleDungeon/DungeonProvider.dart';
+import 'package:SimpleDungeon/Providers/DungeonProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'Room.dart';
+import '../Domain/Room.dart';
 
 class MiniMap extends StatelessWidget {
   final double miniMapSize;

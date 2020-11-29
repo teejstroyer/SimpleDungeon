@@ -1,7 +1,8 @@
+import 'package:SimpleDungeon/Providers/GameProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'DungeonProvider.dart';
-import 'FancyButton.dart';
+import '../Providers/DungeonProvider.dart';
+import 'Shared/FancyButton.dart';
 
 class MoveButton extends StatelessWidget {
   final Direction direction;
@@ -37,7 +38,12 @@ class MoveButton extends StatelessWidget {
         color: enabled ? Colors.red : Colors.grey,
         horizontalPadding: 5,
         verticalPadding: 5,
-        onPressed: () => enabled ? Provider.of<DungeonProvider>(context, listen: false).moveInDirection(direction) : null,
+        onPressed: enabled
+            ? () {
+                Provider.of<DungeonProvider>(context, listen: false).moveInDirection(direction);
+                Provider.of<GameProvider>(context, listen: false).setCurrentSelectedEntity(null);
+              }
+            : () => null,
         disabled: !enabled,
       ),
     );

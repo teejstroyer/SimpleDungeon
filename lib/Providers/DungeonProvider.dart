@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'Room.dart';
+import '../Domain/Room.dart';
 
 class DungeonProvider extends ChangeNotifier {
   List<Room> _rooms;
@@ -35,7 +35,6 @@ class DungeonProvider extends ChangeNotifier {
     }
     var neighbor = _rooms.firstWhere((i) => i.x == x && i.y == y, orElse: () => null);
     return neighbor != null; // && (neighbor.visited || _current.cleared);
-    ;
   }
 
   void setCurrentRoom(int x, int y) {
