@@ -3,6 +3,7 @@ import 'Entity.dart';
 
 class Goblin extends Entity {
   Goblin() {
+    super.name = "Goblin";
     super.attack = 20;
     super.entityType = EntityType.Goblin;
     super.priority = 2;

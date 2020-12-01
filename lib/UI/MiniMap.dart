@@ -14,14 +14,18 @@ class MiniMap extends StatelessWidget {
     var rooms = Provider.of<DungeonProvider>(context, listen: true).rooms;
     var currentRoom = Provider.of<DungeonProvider>(context, listen: false).getCurrentRoom();
     double squareSize = miniMapSize / 4;
-    double offsetConstant = 1.05 * squareSize;
+    double offsetConstant = 1.5 * squareSize;
     var mapOffset = Matrix4.translationValues(-(squareSize * currentRoom.x - offsetConstant), -(squareSize * currentRoom.y - offsetConstant), 0);
 
     return Container(
-      decoration: BoxDecoration(border: Border.all(color: Colors.blueGrey, width: 10), color: Colors.white),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black.withAlpha(255).withOpacity(.7), width: 2),
+        color: Color.fromRGBO(50, 50, 50, 0.7),
+      ),
       height: miniMapSize,
       width: miniMapSize,
       child: InteractiveViewer(
+        panEnabled: false,
         transformationController: TransformationController(mapOffset),
         boundaryMargin: EdgeInsets.all(offsetConstant),
         constrained: false,

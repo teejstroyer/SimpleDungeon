@@ -23,12 +23,25 @@ class HealthBar extends StatelessWidget {
     if (maxHealth <= 0) return Container();
     int cw = ((currentHealth / maxHealth) * 100).toInt();
     return Container(
-        width: width,
-        height: height,
-        color: Colors.red,
-        child: Row(children: [
-          Expanded(flex: cw, child: Container(color: healthColor)),
-          Expanded(flex: 100 - cw, child: Container(color: noHealthColor)),
-        ]));
+      child: Stack(
+        alignment: Alignment.centerLeft,
+        children: [
+          Row(
+            children: [
+              Expanded(flex: cw, child: Container(color: healthColor)),
+              Expanded(flex: 100 - cw, child: Container(color: noHealthColor)),
+            ],
+          ),
+          Padding(
+              padding: const EdgeInsets.only(left: 2),
+              child: FittedBox(
+                child: Text(
+                  '$currentHealth/$maxHealth',
+                  style: TextStyle(color: Colors.black),
+                ),
+              )),
+        ],
+      ),
+    );
   }
 }

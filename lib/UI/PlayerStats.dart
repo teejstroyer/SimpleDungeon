@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'Shared/HealthBar.dart';
 
 class PlayerStats extends StatelessWidget {
-  const PlayerStats({Key key}) : super(key: key);
+  final double fontSize;
+  const PlayerStats({Key key, this.fontSize}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +19,16 @@ class PlayerStats extends StatelessWidget {
           color: Colors.amber,
           child: Center(child: Text(player.attack.toString())),
         ),
-        HealthBar(
-          height: 20,
-          width: 100,
-          currentHealth: player.health,
-          maxHealth: player.maxHealth,
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.only(left: 5, right: 5),
+            height: 20,
+            child: HealthBar(
+              height: 20,
+              currentHealth: player.health,
+              maxHealth: player.maxHealth,
+            ),
+          ),
         )
       ],
     );

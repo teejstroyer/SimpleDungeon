@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 class Entity {
+  Color color = Colors.grey;
   EntityType entityType;
-  int priority = 1;
-  int level;
+  IconData icon = Icons.no_encryption;
+  String name;
   int attack;
   int defense;
-  int maxHealth;
   int health;
-  Color color = Colors.grey;
-  IconData icon = Icons.no_encryption;
+  int level;
+  int maxHealth;
+  int priority = 1;
 
   void takeDamage(int damage) {
     health -= damage;

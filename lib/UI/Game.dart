@@ -28,7 +28,7 @@ class Game extends StatelessWidget {
               children: [
                 PlayerStats(),
                 GameInfo(),
-                Expanded(child: getCenterView()),
+                getCenterView(),
                 FlatButton(
                     onPressed: () => Provider.of<GameProvider>(context, listen: false).damageEntity(),
                     child: CircleAvatar(
@@ -48,7 +48,7 @@ class Game extends StatelessWidget {
   }
 
   Widget getCenterView() {
-    return Container(
+    return Expanded(
       child: LayoutBuilder(
         builder: (context, constraint) {
           var gameContainerSize = constraint.biggest.shortestSide * .95;
@@ -94,30 +94,47 @@ class GameInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10),
-      height: 120,
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                EntityInfo(),
-                Expanded(child: Container(color: Colors.blue, child: Center(child: Text('Game Messages')))),
-              ],
-            ),
+      height: 150,
+      child: Row(children: [
+        Expanded(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: EntityInfo(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black.withAlpha(255).withOpacity(.7),
+                        width: 2,
+                      ),
+                      color: Color.fromRGBO(50, 50, 50, 0.7),
+                    ),
+                    child: Center(
+                      child: Text('Game Messages', style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          _getMiniMap()
-        ],
-      ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(1.0),
+          child: _getMiniMap(),
+        )
+      ]),
     );
   }
 
-  LayoutBuilder _getMiniMap() {
-    return LayoutBuilder(builder: (context, constraint) {
-      return MiniMap(
-        miniMapSize: constraint.biggest.shortestSide,
-      );
-    });
-  }
+  LayoutBuilder _getMiniMap() => LayoutBuilder(
+      builder: (context, constraint) => MiniMap(
+            miniMapSize: constraint.biggest.shortestSide,
+          ));
 }
 
 class EntityInfo extends StatelessWidget {
@@ -130,14 +147,24 @@ class EntityInfo extends StatelessWidget {
     Entity selectedEntity = Provider.of<GameProvider>(context).getCurrentSelectedEntity();
     return Expanded(
       child: Container(
-        color: Colors.white,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.black.withAlpha(255).withOpacity(.7),
+            width: 2,
+          ),
+          color: Color.fromRGBO(50, 50, 50, 0.7),
+        ),
+        padding: EdgeInsets.all(3),
         child: selectedEntity == null
             ? null
             : Column(
                 children: [
                   Row(
                     children: [
-                      Text(selectedEntity == null ? "" : selectedEntity.entityType.toString()),
+                      Text(
+                        selectedEntity == null ? "" : selectedEntity.name + ": ",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.only(left: 2, right: 2),

@@ -3,6 +3,7 @@ import 'Entity.dart';
 
 class Chest extends Entity {
   Chest() {
+    super.name = "Chest";
     super.attack = 0;
     super.color = Colors.brown;
     super.defense = 0;
