@@ -9,8 +9,8 @@ class Dragon extends Entity {
     super.priority = 5;
     super.level = 1;
     super.defense = 10;
-    super.health = 81;
-    super.maxHealth = 100;
+    super.health = 150;
+    super.maxHealth = 150;
     super.icon = Icons.ac_unit;
     super.color = Colors.deepOrange;
   }

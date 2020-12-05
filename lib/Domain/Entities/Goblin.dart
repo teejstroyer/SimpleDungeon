@@ -9,7 +9,7 @@ class Goblin extends Entity {
     super.priority = 2;
     super.level = 1;
     super.defense = 10;
-    super.health = 81;
+    super.health = 100;
     super.maxHealth = 100;
     super.icon = Icons.fire_extinguisher;
     super.color = Colors.green;

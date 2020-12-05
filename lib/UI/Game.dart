@@ -99,10 +99,7 @@ class GameInfo extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: EntityInfo(),
-              ),
+              EntityInfo(),
               Padding(
                 padding: const EdgeInsets.all(1.0),
                 child: Expanded(

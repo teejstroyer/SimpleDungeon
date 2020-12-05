@@ -8,7 +8,7 @@ class Player extends Entity {
     super.priority = 0;
     super.level = 1;
     super.defense = 10;
-    super.health = 81;
+    super.health = 100;
     super.maxHealth = 100;
     super.icon = Icons.person;
     super.color = Colors.cyan;
