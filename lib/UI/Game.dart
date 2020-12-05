@@ -30,7 +30,7 @@ class Game extends StatelessWidget {
                 GameInfo(),
                 getCenterView(),
                 FlatButton(
-                    onPressed: () => Provider.of<GameProvider>(context, listen: false).damageEntity(),
+                    onPressed: () => Provider.of<GameProvider>(context, listen: false).playTurn(),
                     child: CircleAvatar(
                       radius: 70,
                       backgroundColor: Colors.orange,

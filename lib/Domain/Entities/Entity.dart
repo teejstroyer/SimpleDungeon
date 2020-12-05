@@ -1,3 +1,4 @@
+import 'package:SimpleDungeon/Domain/Dice.dart';
 import 'package:flutter/material.dart';
 
 class Entity {
@@ -11,6 +12,7 @@ class Entity {
   int level;
   int maxHealth;
   int priority = 1;
+  Die selectedDie = Die.SixSideRegular;
 
   void takeDamage(int damage) {
     health -= damage;
