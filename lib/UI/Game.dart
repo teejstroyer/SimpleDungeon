@@ -19,7 +19,7 @@ class Game extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Colors.deepPurple.shade800, Colors.deepPurple.shade400, Colors.deepPurple.shade900],
+              colors: [Colors.deepPurple.shade900, Colors.deepPurple.shade500, Colors.deepPurple.shade900],
               tileMode: TileMode.repeated, // repeats the gradient over the canvas
             ),
           ),
@@ -34,10 +34,7 @@ class Game extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 70,
                       backgroundColor: Colors.orange,
-                      child: Icon(
-                        Icons.remove,
-                        size: 150,
-                      ),
+                      child: Text(Provider.of<GameProvider>(context, listen: true).lastRoll),
                     ))
               ],
             ),
@@ -86,9 +83,7 @@ class Game extends StatelessWidget {
 }
 
 class GameInfo extends StatelessWidget {
-  const GameInfo({
-    Key key,
-  }) : super(key: key);
+  const GameInfo({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -100,30 +95,19 @@ class GameInfo extends StatelessWidget {
           child: Column(
             children: [
               EntityInfo(),
-              Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black.withAlpha(255).withOpacity(.7),
-                        width: 2,
-                      ),
-                      color: Color.fromRGBO(50, 50, 50, 0.7),
-                    ),
-                    child: Center(
-                      child: Text('Game Messages', style: TextStyle(color: Colors.white)),
-                    ),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black.withAlpha(255).withOpacity(.7), width: 2),
+                    color: Color.fromRGBO(50, 50, 50, 0.7),
                   ),
+                  child: Center(child: Text(Provider.of<GameProvider>(context, listen: true).gameMessage ?? "", style: TextStyle(color: Colors.white))),
                 ),
               ),
             ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(1.0),
-          child: _getMiniMap(),
-        )
+        _getMiniMap()
       ]),
     );
   }
@@ -141,7 +125,7 @@ class EntityInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Entity selectedEntity = Provider.of<GameProvider>(context).getCurrentSelectedEntity();
+    Entity selectedEntity = Provider.of<GameProvider>(context).currentSelectedEntity;
     return Expanded(
       child: Container(
         decoration: BoxDecoration(

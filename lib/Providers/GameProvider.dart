@@ -7,19 +7,33 @@ class GameProvider extends ChangeNotifier {
   DiceManager _diceManager = new DiceManager();
   Entity _currentEntity;
   Player _player;
-
-  GameProvider() {
-    _player = new Player();
-  }
+  String _lastRoll;
+  String _gameMessage;
 
   Player get player => _player;
+  String get lastRoll => _lastRoll;
+  String get gameMessage => _gameMessage;
+  Entity get currentSelectedEntity => _currentEntity;
 
-  void setCurrentSelectedEntity(Entity entity) {
+  set gameMessage(String message) {
+    _gameMessage = message;
+    notifyListeners();
+  }
+
+  set currentSelectedEntity(Entity entity) {
     _currentEntity = entity;
     notifyListeners();
   }
 
-  Entity getCurrentSelectedEntity() => _currentEntity;
+  set lastRoll(String roll) {
+    _lastRoll = roll;
+    notifyListeners();
+  }
+
+  GameProvider() {
+    _player = new Player();
+    _lastRoll = "Roll";
+  }
 
   void _damageEntity(int damage) {
     if (_currentEntity != null) {
@@ -41,11 +55,13 @@ class GameProvider extends ChangeNotifier {
       print("Player Rolled $pRoll");
       _damageEntity(pRoll);
       await new Future.delayed(const Duration(seconds: 1));
+      lastRoll = pRoll.toString();
       // Player roll, current selected die
       // Play Attack Animation
       // Should reduce entities health etc etc
       print("Entity Rolled $eRoll");
       _damagePlayer(eRoll);
+      gameMessage = "${currentSelectedEntity.name} rolled a $eRoll";
     }
   }
 }
