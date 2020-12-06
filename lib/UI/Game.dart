@@ -12,32 +12,30 @@ import 'PlayerStats.dart';
 class Game extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.deepPurple.shade900, Colors.deepPurple.shade500, Colors.deepPurple.shade900],
-              tileMode: TileMode.repeated, // repeats the gradient over the canvas
-            ),
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.deepPurple.shade900, Colors.deepPurple.shade500, Colors.deepPurple.shade900],
+            tileMode: TileMode.repeated, // repeats the gradient over the canvas
           ),
-          child: SafeArea(
-            child: Column(
-              children: [
-                PlayerStats(),
-                GameInfo(),
-                getCenterView(),
-                FlatButton(
-                    onPressed: () => Provider.of<GameProvider>(context, listen: false).playTurn(),
-                    child: CircleAvatar(
-                      radius: 70,
-                      backgroundColor: Colors.orange,
-                      child: Text(Provider.of<GameProvider>(context, listen: true).lastRoll),
-                    ))
-              ],
-            ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              PlayerStats(),
+              GameInfo(),
+              getCenterView(),
+              FlatButton(
+                  onPressed: () => Provider.of<GameProvider>(context, listen: false).playTurn(context),
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundColor: Colors.orange,
+                    child: Text(Provider.of<GameProvider>(context, listen: true).lastRoll),
+                  ))
+            ],
           ),
         ),
       ),
@@ -101,7 +99,8 @@ class GameInfo extends StatelessWidget {
                     border: Border.all(color: Colors.black.withAlpha(255).withOpacity(.7), width: 2),
                     color: Color.fromRGBO(50, 50, 50, 0.7),
                   ),
-                  child: Center(child: Text(Provider.of<GameProvider>(context, listen: true).gameMessage ?? "", style: TextStyle(color: Colors.white))),
+                  child:
+                      Center(child: Text(Provider.of<GameProvider>(context, listen: true).gameMessage ?? "", style: TextStyle(color: Colors.white))),
                 ),
               ),
             ],
