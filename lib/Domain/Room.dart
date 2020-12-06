@@ -29,14 +29,19 @@ class Room {
 
   // ignore: missing_return
   Entity randomEntity() {
-    var e = EntityType.values[Random().nextInt(EntityType.values.length)];
-    switch (e) {
+    Entity ent = Entity();
+    switch (EntityType.values[Random().nextInt(EntityType.values.length)]) {
       case EntityType.Chest:
-        return new Chest();
+        ent = new Chest();
+        break;
       case EntityType.Dragon:
-        return new Dragon();
+        ent = new Dragon();
+        break;
       case EntityType.Goblin:
-        return new Goblin();
+        ent = new Goblin();
+        break;
     }
+    ent.rewardType = RewardType.values[Random().nextInt(RewardType.values.length)];
+    return ent;
   }
 }

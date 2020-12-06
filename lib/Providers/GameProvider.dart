@@ -50,28 +50,30 @@ class GameProvider extends ChangeNotifier {
   void playTurn(BuildContext context) async {
     // Play Dice Roll Animation
     if (_currentEntity != null) {
-      int pRoll = _diceManager.roll(player.selectedDie);
+      int pRoll = _diceManager.roll(_player.selectedDie);
       int eRoll = _diceManager.roll(_currentEntity.selectedDie);
-      print("Player Rolled $pRoll");
-      // _damageEntity(pRoll);
-      _damageEntity(100);
-      /* Have to do the death check here, or else the delay allows for the Attack button to be pressed 
-      more than once. So either 
-      1) The enemy doesn't get a counter-attack on death and the animation plays after the reward is handled
-      2) This function is made synchronous
-      3) The Attack button is disabled until this function is finished with the async execution
-      */
-      if (currentSelectedEntity.health <= 0) {
-        showRewardAlert(context);
+      // Don't allow any actions if the enemy is already dead
+      // This is mostly as a first line of defense to prevent the reward popup showing multiple times
+      // But also prevents a dead enemy from still dealing damage
+      if (_currentEntity.health != 0) {
+        print("Player Rolled $pRoll");
+        // _damageEntity(pRoll);
+        _damageEntity(100);
+        // If the enemy was killed just now, show the reward
+        // Must be placed here, or else the animation runtime will allow for the reward popup to
+        //   display several times if the Attack button is spammed
+        if (_currentEntity.health <= 0) {
+          showRewardAlert(context);
+        }
+        await new Future.delayed(const Duration(seconds: 1));
+        lastRoll = pRoll.toString();
+        // Player roll, current selected die
+        // Play Attack Animation
+        // Should reduce entities health etc etc
+        print("Entity Rolled $eRoll");
+        _damagePlayer(eRoll);
+        gameMessage = "${_currentEntity.name} rolled a $eRoll";
       }
-      await new Future.delayed(const Duration(seconds: 1));
-      lastRoll = pRoll.toString();
-      // Player roll, current selected die
-      // Play Attack Animation
-      // Should reduce entities health etc etc
-      print("Entity Rolled $eRoll");
-      _damagePlayer(eRoll);
-      gameMessage = "${currentSelectedEntity.name} rolled a $eRoll";
     }
   }
 
@@ -80,18 +82,26 @@ class GameProvider extends ChangeNotifier {
       child: Text("Accept"),
       onPressed: () {
         // update the Player inventory
+        // For testing, just do a player level +1
+        _player.rewardType = _currentEntity.rewardType;
+        _player.acceptReward();
+        _player.rewardType = null;
+        _currentEntity.rewardType = null;
+        notifyListeners();
+        Navigator.pop(context);
       },
     );
     Widget btnRefuse = FlatButton(
       child: Text("Refuse"),
       onPressed: () {
+        // Take no action and close the alert
         Navigator.pop(context);
-      }, // Take no action and close the alert
+      },
     );
 
     AlertDialog alert = AlertDialog(
       title: Text("Reward"),
-      content: Text("For killing the ${currentSelectedEntity.name}, you have recieved: "),
+      content: Text("For killing the ${_currentEntity.name}, you have received: ${_currentEntity.rewardType}"),
       actions: [btnAccept, btnRefuse],
     );
 
