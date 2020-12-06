@@ -18,33 +18,6 @@ class Entity {
     health -= damage;
     if (health < 0) health = 0;
   }
-
-  RewardType rewardType;
-  void acceptReward() {
-    switch (rewardType) {
-      case RewardType.Attack:
-        attack++;
-        break;
-      case RewardType.Defense:
-        defense++;
-        break;
-      case RewardType.Health:
-        health += 25;
-        break;
-      case RewardType.Level:
-        level++;
-        break;
-      default:
-        break;
-    }
-  }
 }
 
 enum EntityType { Chest, Dragon, Goblin }
-
-enum RewardType {
-  Attack,
-  Defense,
-  Health,
-  Level,
-}

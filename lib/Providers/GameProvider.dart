@@ -82,12 +82,6 @@ class GameProvider extends ChangeNotifier {
       child: Text("Accept"),
       onPressed: () {
         // update the Player inventory
-        // For testing, just do a player level +1
-        _player.rewardType = _currentEntity.rewardType;
-        _player.acceptReward();
-        _player.rewardType = null;
-        _currentEntity.rewardType = null;
-        notifyListeners();
         Navigator.pop(context);
       },
     );
@@ -101,7 +95,7 @@ class GameProvider extends ChangeNotifier {
 
     AlertDialog alert = AlertDialog(
       title: Text("Reward"),
-      content: Text("For killing the ${_currentEntity.name}, you have received: ${_currentEntity.rewardType}"),
+      content: Text("For killing the ${_currentEntity.name}, you have received a reward."),
       actions: [btnAccept, btnRefuse],
     );
 
