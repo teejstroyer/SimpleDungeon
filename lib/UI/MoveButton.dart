@@ -41,7 +41,7 @@ class MoveButton extends StatelessWidget {
         onPressed: enabled
             ? () {
                 Provider.of<DungeonProvider>(context, listen: false).moveInDirection(direction);
-                Provider.of<GameProvider>(context, listen: false).setCurrentSelectedEntity(null);
+                Provider.of<GameProvider>(context, listen: false).currentSelectedEntity = null;
               }
             : () => null,
         disabled: !enabled,

@@ -28,7 +28,7 @@ class CurrentRoom extends StatelessWidget {
             size: 45,
             horizontalPadding: 0,
             verticalPadding: 0,
-            onPressed: () => Provider.of<GameProvider>(context, listen: false).setCurrentSelectedEntity(entity),
+            onPressed: () => Provider.of<GameProvider>(context, listen: false).currentSelectedEntity = entity,
             child: Container(child: Center(child: LayoutBuilder(builder: (context, constraints) {
               return Icon(entity.icon, size: constraints.biggest.shortestSide);
             }))),
@@ -42,11 +42,7 @@ class CurrentRoom extends StatelessWidget {
 }
 
 class EntityButton extends StatelessWidget {
-  const EntityButton({
-    Key key,
-    @required this.entity,
-  }) : super(key: key);
-
+  const EntityButton({Key key, @required this.entity}) : super(key: key);
   final Entity entity;
 
   @override
@@ -57,9 +53,7 @@ class EntityButton extends StatelessWidget {
       size: 45,
       horizontalPadding: padding,
       verticalPadding: padding,
-      onPressed: () {
-        Provider.of<GameProvider>(context).setCurrentSelectedEntity(entity);
-      },
+      onPressed: () => Provider.of<GameProvider>(context).currentSelectedEntity = entity,
       child: Container(child: Center(child: LayoutBuilder(builder: (context, constraints) {
         return Icon(entity.icon, size: constraints.biggest.shortestSide);
       }))),
