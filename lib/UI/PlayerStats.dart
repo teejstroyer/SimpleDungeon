@@ -1,4 +1,4 @@
-import 'package:SimpleDungeon/Providers/GameProvider.dart';
+import 'package:simple_dungeon/Providers/GameProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +10,7 @@ class PlayerStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var player = Provider.of<GameProvider>(context, listen: true).player;
+    var player = context.select((GameProvider g) => g.player);
     return Row(
       children: [
         CircleAvatar(child: Text(player.level.toString())),

@@ -1,4 +1,4 @@
-import 'package:SimpleDungeon/Domain/Entities/Entity.dart';
+import 'package:simple_dungeon/Domain/Entities/Entity.dart';
 import 'package:flutter/material.dart';
 
 class Player extends Entity {

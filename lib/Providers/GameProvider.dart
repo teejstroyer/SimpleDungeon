@@ -1,6 +1,6 @@
-import 'package:SimpleDungeon/Domain/Dice.dart';
-import 'package:SimpleDungeon/Domain/Entities/Entity.dart';
-import 'package:SimpleDungeon/Domain/Entities/Player.dart';
+import 'package:simple_dungeon/Domain/Dice.dart';
+import 'package:simple_dungeon/Domain/Entities/Entity.dart';
+import 'package:simple_dungeon/Domain/Entities/Player.dart';
 import 'package:flutter/material.dart';
 
 class GameProvider extends ChangeNotifier {
