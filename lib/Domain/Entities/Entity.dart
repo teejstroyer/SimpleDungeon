@@ -1,4 +1,4 @@
-import 'package:SimpleDungeon/Domain/Dice.dart';
+import 'package:simple_dungeon/Domain/Dice.dart';
 import 'package:flutter/material.dart';
 
 class Entity {

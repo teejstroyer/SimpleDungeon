@@ -1,13 +1,11 @@
-import 'package:SimpleDungeon/Domain/Entities/Entity.dart';
-import 'package:SimpleDungeon/Providers/GameProvider.dart';
-import 'package:SimpleDungeon/UI/CurrentRoom.dart';
-import 'package:SimpleDungeon/UI/Shared/HealthBar.dart';
+import 'package:simple_dungeon/Providers/DungeonProvider.dart';
+import 'package:simple_dungeon/Providers/GameProvider.dart';
+import 'package:simple_dungeon/UI/CurrentRoom.dart';
+import 'package:simple_dungeon/UI/GameInfo.dart';
+import 'package:simple_dungeon/UI/MoveButton.dart';
+import 'package:simple_dungeon/UI/PlayerStats.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../Providers/DungeonProvider.dart';
-import 'MiniMap.dart';
-import 'MoveButton.dart';
-import 'PlayerStats.dart';
 
 class Game extends StatelessWidget {
   @override
@@ -21,21 +19,21 @@ class Game extends StatelessWidget {
             colors: [Colors.deepPurple.shade900, Colors.deepPurple.shade500, Colors.deepPurple.shade900],
             tileMode: TileMode.repeated, // repeats the gradient over the canvas
           ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              PlayerStats(),
-              GameInfo(),
-              getCenterView(),
-              FlatButton(
-                  onPressed: () => Provider.of<GameProvider>(context, listen: false).playTurn(context),
-                  child: CircleAvatar(
-                    radius: 70,
-                    backgroundColor: Colors.orange,
-                    child: Text(Provider.of<GameProvider>(context, listen: true).lastRoll),
-                  ))
-            ],
+          child: SafeArea(
+            child: Column(
+              children: [
+                PlayerStats(),
+                GameInfo(),
+                getCenterView(),
+                FlatButton(
+                    onPressed: () => context.read<GameProvider>().playTurn(),
+                    child: CircleAvatar(
+                      radius: 70,
+                      backgroundColor: Colors.orange,
+                      child: Text(context.select((GameProvider g) => g.lastRoll)),
+                    ))
+              ],
+            ),
           ),
         ),
       ),
@@ -75,90 +73,6 @@ class Game extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class GameInfo extends StatelessWidget {
-  const GameInfo({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      height: 150,
-      child: Row(children: [
-        Expanded(
-          child: Column(
-            children: [
-              EntityInfo(),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black.withAlpha(255).withOpacity(.7), width: 2),
-                    color: Color.fromRGBO(50, 50, 50, 0.7),
-                  ),
-                  child:
-                      Center(child: Text(Provider.of<GameProvider>(context, listen: true).gameMessage ?? "", style: TextStyle(color: Colors.white))),
-                ),
-              ),
-            ],
-          ),
-        ),
-        _getMiniMap()
-      ]),
-    );
-  }
-
-  LayoutBuilder _getMiniMap() => LayoutBuilder(
-      builder: (context, constraint) => MiniMap(
-            miniMapSize: constraint.biggest.shortestSide,
-          ));
-}
-
-class EntityInfo extends StatelessWidget {
-  const EntityInfo({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    Entity selectedEntity = Provider.of<GameProvider>(context).currentSelectedEntity;
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black.withAlpha(255).withOpacity(.7),
-            width: 2,
-          ),
-          color: Color.fromRGBO(50, 50, 50, 0.7),
-        ),
-        padding: EdgeInsets.all(3),
-        child: selectedEntity == null
-            ? null
-            : Column(
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        selectedEntity == null ? "" : selectedEntity.name + ": ",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(left: 2, right: 2),
-                          height: 10,
-                          child: HealthBar(
-                            currentHealth: selectedEntity.health,
-                            maxHealth: selectedEntity.maxHealth,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
       ),
     );
   }

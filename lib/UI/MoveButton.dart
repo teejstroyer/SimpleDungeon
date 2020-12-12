@@ -1,8 +1,8 @@
-import 'package:SimpleDungeon/Providers/GameProvider.dart';
+import 'package:simple_dungeon/Providers/DungeonProvider.dart';
+import 'package:simple_dungeon/Providers/GameProvider.dart';
+import 'package:simple_dungeon/UI/Shared/FancyButton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../Providers/DungeonProvider.dart';
-import 'Shared/FancyButton.dart';
 
 class MoveButton extends StatelessWidget {
   final Direction direction;
@@ -10,7 +10,7 @@ class MoveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool enabled = Provider.of<DungeonProvider>(context, listen: true).isDirectionAvailable(direction);
+    bool enabled = context.select((DungeonProvider d) => d.isDirectionAvailable(direction));
     IconData icon;
     switch (direction) {
       case Direction.LEFT:
@@ -40,8 +40,8 @@ class MoveButton extends StatelessWidget {
         verticalPadding: 5,
         onPressed: enabled
             ? () {
-                Provider.of<DungeonProvider>(context, listen: false).moveInDirection(direction);
-                Provider.of<GameProvider>(context, listen: false).currentSelectedEntity = null;
+                context.read<DungeonProvider>().moveInDirection(direction);
+                context.read<GameProvider>().currentSelectedEntity = null;
               }
             : () => null,
         disabled: !enabled,

@@ -1,6 +1,6 @@
 import 'dart:math';
+import 'package:simple_dungeon/Domain/Room.dart';
 import 'package:flutter/material.dart';
-import '../Domain/Room.dart';
 
 class DungeonProvider extends ChangeNotifier {
   List<Room> _rooms;

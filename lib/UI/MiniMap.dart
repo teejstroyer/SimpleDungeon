@@ -1,8 +1,8 @@
 import 'dart:math';
-import 'package:SimpleDungeon/Providers/DungeonProvider.dart';
+import 'package:simple_dungeon/Domain/Room.dart';
+import 'package:simple_dungeon/Providers/DungeonProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../Domain/Room.dart';
 
 class MiniMap extends StatelessWidget {
   final double miniMapSize;
@@ -11,15 +11,20 @@ class MiniMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var rooms = Provider.of<DungeonProvider>(context, listen: true).rooms;
-    var currentRoom = Provider.of<DungeonProvider>(context, listen: false).getCurrentRoom();
+    var rooms = context.select((DungeonProvider d) => d.rooms);
+    var currentRoom = context.select((DungeonProvider d) => d.getCurrentRoom());
     double squareSize = miniMapSize / 4;
-    double offsetConstant = 1.5 * squareSize;
-    var mapOffset = Matrix4.translationValues(-(squareSize * currentRoom.x - offsetConstant), -(squareSize * currentRoom.y - offsetConstant), 0);
+    double offsetConstant = 1.5 * squareSize; //center of square
+
+    var mapOffset = Matrix4.translationValues(
+      -(currentRoom.x * squareSize - offsetConstant),
+      -(currentRoom.y * squareSize - offsetConstant),
+      0,
+    );
 
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black.withAlpha(255).withOpacity(.7), width: 2),
+        border: Border.all(color: Colors.black.withOpacity(.7), width: 2),
         color: Color.fromRGBO(50, 50, 50, 0.7),
       ),
       height: miniMapSize,
@@ -30,7 +35,10 @@ class MiniMap extends StatelessWidget {
         boundaryMargin: EdgeInsets.all(offsetConstant),
         constrained: false,
         scaleEnabled: false,
-        child: UnconstrainedBox(clipBehavior: Clip.hardEdge, child: drawGrid(squareSize, rooms)),
+        child: UnconstrainedBox(
+          clipBehavior: Clip.hardEdge,
+          child: drawGrid(squareSize, rooms),
+        ),
       ),
     );
   }
@@ -44,22 +52,18 @@ class MiniMap extends StatelessWidget {
       List<Widget> w = new List<Widget>();
       for (int x = 0; x <= maxX; x++) {
         var room = rooms.firstWhere((r) => r.x == x && r.y == y, orElse: () => null);
-        var c = room == null
-            ? Colors.transparent
-            : room.current
-                ? Colors.yellow
-                : room.visited
-                    ? Colors.green
-                    : Colors.red;
         w.add(
           new Container(
             height: roomSize,
             width: roomSize,
             child: Center(
               child: Container(
-                color: c,
-                height: roomSize - 1,
-                width: roomSize - 1,
+                height: roomSize * .85,
+                width: roomSize * .85,
+                decoration: BoxDecoration(
+                  color: roomColor(room),
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                ),
               ),
             ),
           ),
@@ -73,4 +77,12 @@ class MiniMap extends StatelessWidget {
       child: Column(children: rows),
     );
   }
+
+  Color roomColor(Room room) => room == null
+      ? Colors.transparent
+      : room.current
+          ? Colors.yellow
+          : room.visited
+              ? Colors.green
+              : Colors.red;
 }

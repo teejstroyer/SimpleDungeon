@@ -1,4 +1,4 @@
-import 'package:SimpleDungeon/Providers/DungeonProvider.dart';
+import 'package:simple_dungeon/Providers/DungeonProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'UI/Game.dart';

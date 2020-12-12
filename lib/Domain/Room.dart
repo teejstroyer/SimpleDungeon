@@ -1,4 +1,4 @@
-import 'package:SimpleDungeon/Domain/Entities/Entity.dart';
+import 'package:simple_dungeon/Domain/Entities/Entity.dart';
 import 'dart:math';
 
 import 'Entities/Chest.dart';
