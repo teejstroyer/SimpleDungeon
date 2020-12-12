@@ -47,58 +47,21 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void playTurn(BuildContext context) async {
+  void playTurn() async {
     // Play Dice Roll Animation
     if (_currentEntity != null) {
-      int pRoll = _diceManager.roll(_player.selectedDie);
+      int pRoll = _diceManager.roll(player.selectedDie);
       int eRoll = _diceManager.roll(_currentEntity.selectedDie);
-      // Don't allow any actions if the enemy is already dead
-      // This is mostly as a first line of defense to prevent the reward popup showing multiple times
-      // But also prevents a dead enemy from still dealing damage
-      if (_currentEntity.health != 0) {
-        print("Player Rolled $pRoll");
-        // _damageEntity(pRoll);
-        _damageEntity(100);
-        // If the enemy was killed just now, show the reward
-        // Must be placed here, or else the animation runtime will allow for the reward popup to
-        //   display several times if the Attack button is spammed
-        if (_currentEntity.health <= 0) {
-          showRewardAlert(context);
-        }
-        await new Future.delayed(const Duration(seconds: 1));
-        lastRoll = pRoll.toString();
-        // Player roll, current selected die
-        // Play Attack Animation
-        // Should reduce entities health etc etc
-        print("Entity Rolled $eRoll");
-        _damagePlayer(eRoll);
-        gameMessage = "${_currentEntity.name} rolled a $eRoll";
-      }
+      print("Player Rolled $pRoll");
+      _damageEntity(pRoll);
+      await new Future.delayed(const Duration(seconds: 1));
+      lastRoll = pRoll.toString();
+      // Player roll, current selected die
+      // Play Attack Animation
+      // Should reduce entities health etc etc
+      print("Entity Rolled $eRoll");
+      _damagePlayer(eRoll);
+      gameMessage = "${currentSelectedEntity.name} rolled a $eRoll";
     }
-  }
-
-  void showRewardAlert(BuildContext context) {
-    Widget btnAccept = FlatButton(
-      child: Text("Accept"),
-      onPressed: () {
-        // update the Player inventory
-        Navigator.pop(context);
-      },
-    );
-    Widget btnRefuse = FlatButton(
-      child: Text("Refuse"),
-      onPressed: () {
-        // Take no action and close the alert
-        Navigator.pop(context);
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      title: Text("Reward"),
-      content: Text("For killing the ${_currentEntity.name}, you have received a reward."),
-      actions: [btnAccept, btnRefuse],
-    );
-
-    showDialog(context: context, builder: (context) => alert, barrierDismissible: false);
   }
 }

@@ -10,14 +10,16 @@ import 'package:provider/provider.dart';
 class Game extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.deepPurple.shade900, Colors.deepPurple.shade500, Colors.deepPurple.shade900],
-            tileMode: TileMode.repeated, // repeats the gradient over the canvas
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.deepPurple.shade900, Colors.deepPurple.shade500, Colors.deepPurple.shade900],
+              tileMode: TileMode.repeated, // repeats the gradient over the canvas
+            ),
           ),
           child: SafeArea(
             child: Column(
@@ -26,7 +28,34 @@ class Game extends StatelessWidget {
                 GameInfo(),
                 getCenterView(),
                 FlatButton(
-                    onPressed: () => context.read<GameProvider>().playTurn(),
+                    onPressed: () {
+                      context.read<GameProvider>().playTurn();
+                      var selectedEntity = context.read<GameProvider>().currentSelectedEntity;
+                      if (selectedEntity.health <= 0) {
+                        Widget btnAccept = FlatButton(
+                          child: Text("Accept"),
+                          onPressed: () {
+                            // update the Player inventory
+                            Navigator.pop(context);
+                          },
+                        );
+                        Widget btnRefuse = FlatButton(
+                          child: Text("Refuse"),
+                          onPressed: () {
+                            // Take no action and close the alert
+                            Navigator.pop(context);
+                          },
+                        );
+
+                        AlertDialog alert = AlertDialog(
+                          title: Text("Reward"),
+                          content: Text("For killing the ${selectedEntity.name}, you have received a reward."),
+                          actions: [btnAccept, btnRefuse],
+                        );
+
+                        showDialog(context: context, builder: (context) => alert, barrierDismissible: false);
+                      }
+                    },
                     child: CircleAvatar(
                       radius: 70,
                       backgroundColor: Colors.orange,
