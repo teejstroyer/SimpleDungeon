@@ -29,8 +29,7 @@ class Room {
 
   // ignore: missing_return
   Entity randomEntity() {
-    var e = EntityType.values[Random().nextInt(EntityType.values.length)];
-    switch (e) {
+    switch (EntityType.values[Random().nextInt(EntityType.values.length)]) {
       case EntityType.Chest:
         return new Chest();
       case EntityType.Dragon:

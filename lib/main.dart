@@ -7,7 +7,7 @@ import 'Providers/GameProvider.dart';
 void main() {
   runApp(
     MultiProvider(
-      child: new Game(),
+      child: MaterialApp(home: Game()),
       providers: [
         ChangeNotifierProvider(create: (context) => DungeonProvider()),
         ChangeNotifierProvider(create: (context) => GameProvider()),
