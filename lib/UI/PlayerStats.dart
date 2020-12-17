@@ -1,8 +1,7 @@
 import 'package:simple_dungeon/Providers/GameProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'Shared/HealthBar.dart';
+import 'package:simple_dungeon/UI/Shared/HealthBar.dart';
 
 class PlayerStats extends StatelessWidget {
   final double fontSize;
@@ -10,14 +9,15 @@ class PlayerStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var player = context.select((GameProvider g) => g.player);
+    print(this);
+
     return Row(
       children: [
-        CircleAvatar(child: Text(player.level.toString())),
+        CircleAvatar(child: Text(context.select<GameProvider, int>((g) => g.player.level).toString())),
         Container(
           height: 75,
           color: Colors.amber,
-          child: Center(child: Text(player.attack.toString())),
+          child: Center(child: Text(context.select<GameProvider, int>((g) => g.player.attack).toString())),
         ),
         Expanded(
           child: Container(
@@ -25,8 +25,8 @@ class PlayerStats extends StatelessWidget {
             height: 20,
             child: HealthBar(
               height: 20,
-              currentHealth: player.health,
-              maxHealth: player.maxHealth,
+              currentHealth: context.select<GameProvider, int>((g) => g.player.health),
+              maxHealth: context.select<GameProvider, int>((g) => g.player.maxHealth),
             ),
           ),
         )

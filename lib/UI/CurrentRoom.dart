@@ -1,3 +1,4 @@
+import 'package:simple_dungeon/Domain/Room.dart';
 import 'package:simple_dungeon/UI/EntityButton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +7,8 @@ import '../Providers/DungeonProvider.dart';
 class CurrentRoom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var room = context.select((DungeonProvider d) => d.getCurrentRoom());
+    print(this);
+    var room = context.select<DungeonProvider, Room>((p) => p.getCurrentRoom());
     var grid = List<Expanded>();
     List<List<Expanded>> rows = [List<Expanded>()];
     int rowSum = 0;

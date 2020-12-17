@@ -9,7 +9,9 @@ class GameProvider extends ChangeNotifier {
   Player _player;
   String _lastRoll;
   String _gameMessage;
+  bool _playerCanRoll = true;
 
+  bool get playerCanRoll => _playerCanRoll;
   Player get player => _player;
   String get lastRoll => _lastRoll;
   String get gameMessage => _gameMessage;
@@ -27,6 +29,11 @@ class GameProvider extends ChangeNotifier {
 
   set lastRoll(String roll) {
     _lastRoll = roll;
+    notifyListeners();
+  }
+
+  set playerCanRoll(bool canRoll) {
+    _playerCanRoll = canRoll;
     notifyListeners();
   }
 
@@ -50,18 +57,14 @@ class GameProvider extends ChangeNotifier {
   void playTurn() async {
     // Play Dice Roll Animation
     if (_currentEntity != null) {
+      playerCanRoll = false;
       int pRoll = _diceManager.roll(player.selectedDie);
       int eRoll = _diceManager.roll(_currentEntity.selectedDie);
-      print("Player Rolled $pRoll");
-      _damageEntity(pRoll);
-      await new Future.delayed(const Duration(seconds: 1));
+      _damageEntity(pRoll * 2);
+      gameMessage = "You rolled a $pRoll";
       lastRoll = pRoll.toString();
-      // Player roll, current selected die
-      // Play Attack Animation
-      // Should reduce entities health etc etc
-      print("Entity Rolled $eRoll");
       _damagePlayer(eRoll);
-      gameMessage = "${currentSelectedEntity.name} rolled a $eRoll";
+      gameMessage += "\n${currentSelectedEntity.name} rolled a $eRoll";
     }
   }
 }

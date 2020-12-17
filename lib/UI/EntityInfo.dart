@@ -11,7 +11,8 @@ class EntityInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Entity selectedEntity = context.select((GameProvider g) => g.currentSelectedEntity);
+    print(this);
+    Entity selectedEntity = context.select<GameProvider, Entity>((g) => g.currentSelectedEntity);
     return Expanded(
       child: Container(
         decoration: BoxDecoration(

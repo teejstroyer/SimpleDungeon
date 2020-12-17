@@ -9,6 +9,7 @@ class GameInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(this);
     return Container(
       padding: EdgeInsets.all(10),
       height: 150,
@@ -25,7 +26,7 @@ class GameInfo extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      context.select((GameProvider g) => g.gameMessage) ?? "",
+                      context.select<GameProvider, String>((g) => g.gameMessage) ?? "",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
