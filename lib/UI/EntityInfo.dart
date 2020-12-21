@@ -11,40 +11,33 @@ class EntityInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(this);
-    Entity selectedEntity = context.select<GameProvider, Entity>((g) => g.currentSelectedEntity);
+    var entity = context.select<GameProvider, Entity>((g) => g.currentSelectedEntity);
     return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black.withOpacity(.7), width: 2),
-          color: Color.fromRGBO(50, 50, 50, 0.7),
+      child: Card(
+        clipBehavior: Clip.hardEdge,
+        child: Padding(
+          padding: EdgeInsets.all(5),
+          child: entity == null ? Container() : entityStats(context),
         ),
-        padding: EdgeInsets.all(3),
-        child: selectedEntity == null
-            ? null
-            : Column(
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        selectedEntity == null ? "" : selectedEntity.name + ": ",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(left: 2, right: 2),
-                          height: 10,
-                          child: HealthBar(
-                            currentHealth: selectedEntity.health,
-                            maxHealth: selectedEntity.maxHealth,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
       ),
+    );
+  }
+
+  Column entityStats(BuildContext context) {
+    int health = context.select<GameProvider, int>((g) => g.currentSelectedEntity.health);
+    int maxHealth = context.select<GameProvider, int>((g) => g.currentSelectedEntity.maxHealth);
+    String name = context.select<GameProvider, String>((g) => g.currentSelectedEntity.name);
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(name + ": ", style: TextStyle(color: Colors.black)),
+            Expanded(
+              child: HealthBar(height: 10, currentHealth: health, maxHealth: maxHealth),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

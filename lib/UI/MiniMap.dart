@@ -11,11 +11,10 @@ class MiniMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(this);
     var rooms = context.select<DungeonProvider, List<Room>>((d) => d.rooms);
     var currentRoom = context.select<DungeonProvider, Room>((d) => d.getCurrentRoom());
     double squareSize = miniMapSize / 4;
-    double offsetConstant = 1.5 * squareSize; //center of square
+    double offsetConstant = 1.4 * squareSize; //center of square
 
     var mapOffset = Matrix4.translationValues(
       -(currentRoom.x * squareSize - offsetConstant),
@@ -23,22 +22,20 @@ class MiniMap extends StatelessWidget {
       0,
     );
 
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black.withOpacity(.7), width: 2),
-        color: Color.fromRGBO(50, 50, 50, 0.7),
-      ),
-      height: miniMapSize,
-      width: miniMapSize,
-      child: InteractiveViewer(
-        panEnabled: false,
-        transformationController: TransformationController(mapOffset),
-        boundaryMargin: EdgeInsets.all(offsetConstant),
-        constrained: false,
-        scaleEnabled: false,
-        child: UnconstrainedBox(
-          clipBehavior: Clip.hardEdge,
-          child: drawGrid(squareSize, rooms),
+    return Card(
+      child: Container(
+        height: miniMapSize,
+        width: miniMapSize,
+        child: InteractiveViewer(
+          panEnabled: false,
+          transformationController: TransformationController(mapOffset),
+          boundaryMargin: EdgeInsets.all(offsetConstant),
+          constrained: false,
+          scaleEnabled: false,
+          child: UnconstrainedBox(
+            clipBehavior: Clip.hardEdge,
+            child: drawGrid(squareSize, rooms),
+          ),
         ),
       ),
     );

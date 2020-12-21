@@ -9,6 +9,7 @@ class HealthBar extends StatelessWidget {
     this.noHealthColor = Colors.red,
     this.height,
     this.width,
+    this.textColor = Colors.black,
   }) : super(key: key);
 
   final double height;
@@ -17,12 +18,15 @@ class HealthBar extends StatelessWidget {
   final int maxHealth;
   final Color healthColor;
   final Color noHealthColor;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
     if (maxHealth <= 0) return Container();
     int cw = ((currentHealth / maxHealth) * 100).toInt();
     return Container(
+      height: height,
+      width: width,
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [
@@ -37,7 +41,7 @@ class HealthBar extends StatelessWidget {
               child: FittedBox(
                 child: Text(
                   '$currentHealth/$maxHealth',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: textColor),
                 ),
               )),
         ],

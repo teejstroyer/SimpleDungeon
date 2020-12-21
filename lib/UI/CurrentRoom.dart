@@ -7,7 +7,6 @@ import '../Providers/DungeonProvider.dart';
 class CurrentRoom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print(this);
     var room = context.select<DungeonProvider, Room>((p) => p.getCurrentRoom());
     var grid = List<Expanded>();
     List<List<Expanded>> rows = [List<Expanded>()];

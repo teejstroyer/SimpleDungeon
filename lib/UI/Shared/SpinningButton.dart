@@ -20,11 +20,9 @@ class _SpinningButtonState extends State<SpinningButton> with SingleTickerProvid
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(
-        milliseconds: 500,
-      ),
-      //lowerBound: 0.0,
-      upperBound: 2 * pi,
+      duration: Duration(milliseconds: 100),
+      lowerBound: 0.0,
+      upperBound: pi / 4,
     )..addListener(() {
         setState(() {});
       });
@@ -42,10 +40,12 @@ class _SpinningButtonState extends State<SpinningButton> with SingleTickerProvid
     _angle = _controller.value;
     return Center(
       child: GestureDetector(
-        onTapDown: _tapDown,
+        onTapDown: widget.onPress != null ? _tapDown : null,
         onTapUp: (TapUpDetails t) {
-          _tapUp(t, context);
-          widget.onPress();
+          if (widget.onPress != null) {
+            _tapUp(t, context);
+            widget.onPress();
+          }
         },
         child: Transform.rotate(
           angle: _angle,

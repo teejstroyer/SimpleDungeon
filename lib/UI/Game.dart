@@ -1,16 +1,18 @@
 import 'package:simple_dungeon/Providers/DungeonProvider.dart';
+import 'package:simple_dungeon/Providers/GameProvider.dart';
 import 'package:simple_dungeon/UI/CurrentRoom.dart';
 import 'package:simple_dungeon/UI/GameInfo.dart';
 import 'package:simple_dungeon/UI/MoveButton.dart';
 import 'package:simple_dungeon/UI/PlayerStats.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_dungeon/UI/RollButton.dart';
+import 'package:provider/provider.dart';
 
 class Game extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print(this);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -23,16 +25,56 @@ class Game extends StatelessWidget {
           ),
           child: SafeArea(
             child: Column(
-              children: [PlayerStats(), GameInfo(), getCenterView(), RollButton()],
+              //mainAxisSize: ,
+              children: [
+                PlayerStats(),
+                GameInfo(),
+                Expanded(child: GameBoard()),
+                Container(child: RollButton(), padding: EdgeInsets.all(5)),
+
+                //Temporary for testing
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        color: Colors.orangeAccent,
+                        height: 130,
+                        child: FlatButton(
+                          child: Text('HURT ME'),
+                          onPressed: () => context.read<GameProvider>().damagePlayer(10),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: Colors.greenAccent,
+                        height: 130,
+                        child: FlatButton(
+                          child: Text('HEAL ME'),
+                          onPressed: () => context.read<GameProvider>().damagePlayer(-10),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
         ),
       ),
     );
   }
+}
 
-  Widget getCenterView() {
-    return Expanded(
+class GameBoard extends StatelessWidget {
+  const GameBoard({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
       child: LayoutBuilder(
         builder: (context, constraint) {
           var gameContainerSize = constraint.biggest.shortestSide * .95;

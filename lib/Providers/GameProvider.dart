@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:simple_dungeon/Domain/Dice.dart';
 import 'package:simple_dungeon/Domain/Entities/Entity.dart';
 import 'package:simple_dungeon/Domain/Entities/Player.dart';
@@ -49,6 +50,8 @@ class GameProvider extends ChangeNotifier {
     }
   }
 
+  void damagePlayer(int damage) => _damagePlayer(damage);
+
   void _damagePlayer(int damage) {
     _player.takeDamage(damage);
     notifyListeners();
@@ -56,15 +59,22 @@ class GameProvider extends ChangeNotifier {
 
   void playTurn() async {
     // Play Dice Roll Animation
+    //att * att / (att + def)
     if (_currentEntity != null) {
       playerCanRoll = false;
       int pRoll = _diceManager.roll(player.selectedDie);
       int eRoll = _diceManager.roll(_currentEntity.selectedDie);
-      _damageEntity(pRoll * 2);
-      gameMessage = "You rolled a $pRoll";
+
+      var pD = _getDamage(pRoll, player.attack, currentSelectedEntity.defense);
+      var eD = _getDamage(eRoll, currentSelectedEntity.attack, player.defense);
+
+      _damageEntity(pD);
+      gameMessage = "You rolled a $pRoll | $pD DMG";
       lastRoll = pRoll.toString();
-      _damagePlayer(eRoll);
-      gameMessage += "\n${currentSelectedEntity.name} rolled a $eRoll";
+      _damagePlayer(eD);
+      gameMessage += "\n${currentSelectedEntity.name} rolled a $eRoll | $eD DMG";
     }
   }
+
+  int _getDamage(int roll1, int attack, int defense) => max(0, roll1 * attack - defense);
 }

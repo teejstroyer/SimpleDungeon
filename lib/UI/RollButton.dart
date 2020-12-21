@@ -7,17 +7,32 @@ import 'package:simple_dungeon/UI/Shared/SpinningButton.dart';
 class RollButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print(this);
     var canRoll = context.select<GameProvider, bool>((g) => g.playerCanRoll);
     var selectedEntity = context.select<GameProvider, Entity>((g) => g.currentSelectedEntity);
+    double size = 80;
 
     return SpinningButton(
       onPress: !canRoll || selectedEntity == null ? null : () => roll(context),
       child: Container(
-        color: Colors.pink,
-        height: 80,
-        width: 80,
-        child: Center(child: Text(context.select<GameProvider, String>((g) => g.lastRoll))),
+        decoration: BoxDecoration(
+          gradient: RadialGradient(focalRadius: size / 2, colors: [Colors.white, Colors.grey]),
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          border: Border.all(
+            color: Colors.black,
+            width: 5,
+          ),
+        ),
+        height: size,
+        width: size,
+        child: FittedBox(
+          alignment: Alignment.center,
+          fit: BoxFit.contain,
+          child: Text(
+            context.select<GameProvider, String>((g) => g.lastRoll),
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
     );
   }
