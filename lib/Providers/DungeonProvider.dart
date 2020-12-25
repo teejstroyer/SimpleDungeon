@@ -7,12 +7,19 @@ class DungeonProvider extends ChangeNotifier {
   Room _currentRoom;
 
   DungeonProvider() {
-    _rooms = new List<Room>();
-    generate(10);
+    newLevel(1);
+  }
+
+  bool get roomCleared => !_currentRoom.entities.any((i) => i.health > 0);
+
+  void newLevel(int level) {
+    _rooms = <Room>[];
+    generate(Random().nextInt(5) + 5);
     _rooms[Random().nextInt(_rooms.length)].current = true;
     _rooms[Random().nextInt(_rooms.length)].visited = true;
     _currentRoom = _rooms.firstWhere((i) => i.current);
   }
+
   List<Room> get rooms => [..._rooms].toList();
 
   Room getCurrentRoom() => _currentRoom;
@@ -34,7 +41,7 @@ class DungeonProvider extends ChangeNotifier {
         break;
     }
     var neighbor = _rooms.firstWhere((i) => i.x == x && i.y == y, orElse: () => null);
-    return neighbor != null; // && (neighbor.visited || _current.cleared);
+    return neighbor != null && (neighbor.visited || roomCleared);
   }
 
   void setCurrentRoom(int x, int y) {
@@ -77,9 +84,8 @@ class DungeonProvider extends ChangeNotifier {
     int posX = 0;
     int posY = 0;
 
-    Random random = new Random();
     while (_rooms.length < roomCount) {
-      switch (random.nextInt(4)) {
+      switch (Random().nextInt(4)) {
         case 0:
           posY--;
           break;
@@ -93,7 +99,7 @@ class DungeonProvider extends ChangeNotifier {
           posX++;
           break;
       }
-      if (!_rooms.any((i) => i.x == posX && i.y == posY)) _rooms.add(new Room(posX, posY, 10));
+      if (!_rooms.any((i) => i.x == posX && i.y == posY)) _rooms.add(new Room(posX, posY, Random().nextInt(4) + 6));
     }
     int minX = _rooms.map<int>((e) => e.x).reduce(min);
     int minY = _rooms.map<int>((e) => e.y).reduce(min);

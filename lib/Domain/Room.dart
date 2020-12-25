@@ -13,11 +13,11 @@ class Room {
   int entityCount;
   List<Entity> entities;
 
-  Room(x, y, entityCount) {
+  Room(int x, int y, int entityCount) {
     this.x = x;
     this.y = y;
     this.entityCount = entityCount;
-    entities = new List<Entity>();
+    entities = <Entity>[];
     generateEntities(false);
   }
 

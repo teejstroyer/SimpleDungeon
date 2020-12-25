@@ -1,5 +1,6 @@
 import 'package:simple_dungeon/Domain/Dice.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_dungeon/Domain/Item.dart';
 
 class Entity {
   Color color = Colors.grey;
@@ -12,7 +13,8 @@ class Entity {
   int level;
   int maxHealth;
   int priority = 1;
-  Die selectedDie = Die.SixSideRegular;
+  Die selectedDie = Die(DieType.SixSideRegular);
+  Item droppableItem;
 
   void takeDamage(int damage) {
     health -= damage;

@@ -45,9 +45,9 @@ class MiniMap extends StatelessWidget {
     int maxX = rooms.map<int>((e) => e.x).reduce(max);
     int maxY = rooms.map<int>((e) => e.y).reduce(max);
 
-    List<Row> rows = new List<Row>();
+    List<Row> rows = <Row>[];
     for (int y = 0; y <= maxY; y++) {
-      List<Widget> w = new List<Widget>();
+      List<Widget> w = <Widget>[];
       for (int x = 0; x <= maxX; x++) {
         var room = rooms.firstWhere((r) => r.x == x && r.y == y, orElse: () => null);
         w.add(

@@ -11,6 +11,7 @@ class MoveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool enabled = context.select<DungeonProvider, bool>((d) => d.isDirectionAvailable(direction));
+    bool complete = context.select<DungeonProvider, bool>((d) => d.roomCleared);
     IconData icon;
     switch (direction) {
       case Direction.LEFT:
@@ -31,7 +32,15 @@ class MoveButton extends StatelessWidget {
       child: FancyButton(
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return Container(child: Center(child: Icon(icon, size: constraints.biggest.shortestSide, color: Color.fromARGB(100, 0, 0, 0))));
+            return Container(
+              child: Center(
+                child: Icon(
+                  icon,
+                  size: constraints.biggest.shortestSide,
+                  color: Color.fromARGB(100, 0, 0, 0),
+                ),
+              ),
+            );
           },
         ),
         size: 50,

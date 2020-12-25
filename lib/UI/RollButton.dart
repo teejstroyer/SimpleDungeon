@@ -37,12 +37,12 @@ class RollButton extends StatelessWidget {
     );
   }
 
-  void roll(BuildContext context) async {
+  void roll(BuildContext context) {
     context.read<GameProvider>().playTurn();
-    var selectedEntity = context.read<GameProvider>().currentSelectedEntity;
-    if (selectedEntity.health <= 0) {
-      await buildShowGeneralDialog(context);
+    if (context.read<GameProvider>().showDialog) {
+      buildShowGeneralDialog(context);
     }
+    print("hello");
     context.read<GameProvider>().playerCanRoll = true;
   }
 
@@ -68,7 +68,12 @@ class RollButton extends StatelessWidget {
         );
       },
       transitionBuilder: (context, anim1, anim2, child) {
-        return SlideTransition(position: Tween(begin: Offset(0, -1), end: Offset(0, 0)).animate(anim1), child: child);
+        return SlideTransition(
+            position: Tween(
+              begin: Offset(0, -1),
+              end: Offset(0, 0),
+            ).animate(anim1),
+            child: child);
       },
     );
   }

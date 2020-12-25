@@ -19,7 +19,11 @@ class Game extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Colors.deepPurple.shade900, Colors.deepPurple.shade500, Colors.deepPurple.shade900],
+              colors: [
+                Colors.deepPurple.shade900,
+                Colors.deepPurple.shade500,
+                Colors.deepPurple.shade900,
+              ],
               tileMode: TileMode.repeated, // repeats the gradient over the canvas
             ),
           ),
@@ -52,6 +56,31 @@ class Game extends StatelessWidget {
                         child: FlatButton(
                           child: Text('HEAL ME'),
                           onPressed: () => context.read<GameProvider>().damagePlayer(-10),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        color: Colors.greenAccent,
+                        height: 130,
+                        child: FlatButton(
+                          child: Text('HURT IT'),
+                          onPressed: () => context.read<GameProvider>().damageEntity(10),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: Colors.orangeAccent,
+                        height: 130,
+                        child: FlatButton(
+                          child: Text('HEAL IT'),
+                          onPressed: () => context.read<GameProvider>().damageEntity(-10),
                         ),
                       ),
                     ),

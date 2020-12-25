@@ -5,7 +5,6 @@ import 'package:simple_dungeon/Domain/Entities/Player.dart';
 import 'package:flutter/material.dart';
 
 class GameProvider extends ChangeNotifier {
-  DiceManager _diceManager = new DiceManager();
   Entity _currentEntity;
   Player _player;
   String _lastRoll;
@@ -17,6 +16,7 @@ class GameProvider extends ChangeNotifier {
   String get lastRoll => _lastRoll;
   String get gameMessage => _gameMessage;
   Entity get currentSelectedEntity => _currentEntity;
+  bool get showDialog => _currentEntity == null ? false : _currentEntity.health <= 0 && _currentEntity.droppableItem != null;
 
   set gameMessage(String message) {
     _gameMessage = message;
@@ -50,6 +50,7 @@ class GameProvider extends ChangeNotifier {
     }
   }
 
+  void damageEntity(int damage) => _damageEntity(damage);
   void damagePlayer(int damage) => _damagePlayer(damage);
 
   void _damagePlayer(int damage) {
@@ -58,12 +59,11 @@ class GameProvider extends ChangeNotifier {
   }
 
   void playTurn() async {
-    // Play Dice Roll Animation
-    //att * att / (att + def)
     if (_currentEntity != null) {
       playerCanRoll = false;
-      int pRoll = _diceManager.roll(player.selectedDie);
-      int eRoll = _diceManager.roll(_currentEntity.selectedDie);
+
+      int pRoll = player.selectedDie.roll();
+      int eRoll = _currentEntity.selectedDie.roll();
 
       var pD = _getDamage(pRoll, player.attack, currentSelectedEntity.defense);
       var eD = _getDamage(eRoll, currentSelectedEntity.attack, player.defense);

@@ -8,8 +8,8 @@ class CurrentRoom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var room = context.select<DungeonProvider, Room>((p) => p.getCurrentRoom());
-    var grid = List<Expanded>();
-    List<List<Expanded>> rows = [List<Expanded>()];
+    var grid = <Expanded>[];
+    List<List<Expanded>> rows = [<Expanded>[]];
     int rowSum = 0;
 
     for (var entity in room.entities) {
@@ -19,7 +19,7 @@ class CurrentRoom extends StatelessWidget {
           child: Row(children: rows[rows.length - 1]),
         ));
         rowSum = 0;
-        rows.add(List<Expanded>());
+        rows.add(<Expanded>[]);
       }
       rowSum += entity.priority;
       rows[rows.length - 1].add(
