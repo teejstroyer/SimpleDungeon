@@ -14,4 +14,6 @@ class Dragon extends Entity {
     super.icon = Icons.ac_unit;
     super.color = Colors.deepOrange;
   }
+
+  Dragon.fromJson(Map jsonData) : super.fromJson(jsonData);
 }

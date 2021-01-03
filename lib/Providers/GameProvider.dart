@@ -77,4 +77,18 @@ class GameProvider extends ChangeNotifier {
   }
 
   int _getDamage(int roll1, int attack, int defense) => max(0, roll1 * attack - defense);
+
+  Map<String, dynamic> toJson() => {
+        "player": _player.toJson(),
+      };
+
+  // Named constructor from JSON data
+  GameProvider.fromJson(Map jsonData) {
+    _lastRoll = "Roll";
+    try {
+      _player = Player.fromJson(jsonData["player"]);
+    } catch (e) {
+      print("error constructing GameProvider from json $e");
+    }
+  }
 }

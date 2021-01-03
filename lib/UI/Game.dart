@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:simple_dungeon/Providers/DungeonProvider.dart';
 import 'package:simple_dungeon/Providers/GameProvider.dart';
 import 'package:simple_dungeon/UI/CurrentRoom.dart';
@@ -7,8 +9,91 @@ import 'package:simple_dungeon/UI/PlayerStats.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_dungeon/UI/RollButton.dart';
 import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart';
 
-class Game extends StatelessWidget {
+class LifecycleWatcher extends StatefulWidget {
+  @override
+  _LifecycleWatcherState createState() => _LifecycleWatcherState();
+}
+
+class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    print("init lifecycle watcher");
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    print("disposing lifecycle watcher");
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("state changed to $state");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class Game extends StatefulWidget {
+  @override
+  _Game createState() => _Game();
+}
+
+class _Game extends State<Game> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      // case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+      //app is inactive when there's an overlay, phone call, PiP, any time the
+      //app can't take input (focus is lost), but may not be in paused state
+      case AppLifecycleState.detached:
+        //technically means the app engine is running without a view, which
+        //functionally means the app is closed
+        // In any of these conditions, save the state of the game, just in case
+        //  it does end up being shut down from a paused state
+        getApplicationDocumentsDirectory().then((documentsDirectory) {
+          var saveFile = File(documentsDirectory.path + "/SimpleDungeonData.txt");
+          // Make sure save file already exists
+          if (!saveFile.existsSync()) {
+            saveFile.createSync();
+          }
+          // Now that we have guaranteed the save file exists, we can write to it
+          var saveData = jsonEncode({
+            "game": this.context.read<GameProvider>().toJson(),
+            "dungeon": this.context.read<DungeonProvider>().toJson(),
+          });
+
+          saveFile.writeAsStringSync(saveData);
+          print("file has been saved");
+        });
+        break;
+      default:
+        break;
+    }
+    print("app state has changed to $state");
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

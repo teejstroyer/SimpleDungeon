@@ -14,4 +14,6 @@ class Goblin extends Entity {
     super.icon = Icons.fire_extinguisher;
     super.color = Colors.green;
   }
+
+  Goblin.fromJson(Map jsonData) : super.fromJson(jsonData);
 }

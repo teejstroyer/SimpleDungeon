@@ -13,4 +13,6 @@ class Player extends Entity {
     super.icon = Icons.person;
     super.color = Colors.cyan;
   }
+
+  Player.fromJson(Map jsonData) : super.fromJson(jsonData);
 }

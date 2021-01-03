@@ -18,6 +18,58 @@ class Entity {
     health -= damage;
     if (health < 0) health = 0;
   }
+
+  Map<String, dynamic> toJson() => {
+        "attack": attack,
+        "entityType": entityType.toString(),
+        "priority": priority,
+        "level": level,
+        "defense": defense,
+        "health": health,
+        "maxHealth": maxHealth,
+        "icon": icon.codePoint,
+        "color": color.value,
+        "name": name,
+      };
+
+  Entity();
+  Entity.fromJson(Map jsonData) {
+    try {
+      attack = jsonData["attack"];
+      priority = jsonData["priority"];
+      level = jsonData["level"];
+      defense = jsonData["defense"];
+      health = jsonData["health"];
+      maxHealth = jsonData["maxHealth"];
+      icon = IconData(jsonData["icon"]);
+      color = Color(jsonData["color"]);
+      name = jsonData["name"];
+      switch (jsonData["entityType"]) {
+        case "EntityType.Chest":
+          entityType = EntityType.Chest;
+          color = Colors.brown;
+          icon = Icons.account_box;
+          break;
+        case "EntityType.Dragon":
+          entityType = EntityType.Dragon;
+          icon = Icons.ac_unit;
+          color = Colors.deepOrange;
+          break;
+        case "EntityType.Goblin":
+          entityType = EntityType.Goblin;
+          icon = Icons.fire_extinguisher;
+          color = Colors.green;
+          break;
+        default:
+          entityType = null;
+          icon = Icons.person;
+          color = Colors.cyan;
+          break;
+      }
+    } catch (e) {
+      print("error constructing Entity from json: $e");
+    }
+  }
 }
 
 enum EntityType { Chest, Dragon, Goblin }

@@ -14,4 +14,6 @@ class Chest extends Entity {
     super.maxHealth = 0;
     super.priority = 1;
   }
+
+  Chest.fromJson(Map jsonData) : super.fromJson(jsonData);
 }

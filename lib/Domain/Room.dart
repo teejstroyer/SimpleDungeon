@@ -38,4 +38,29 @@ class Room {
         return new Goblin();
     }
   }
+
+  Map<String, dynamic> toJson() => {
+        "x": x,
+        "y": y,
+        "current": current,
+        "visited": visited,
+        "entityCount": entityCount,
+        "entities": entities.map((entity) => entity.toJson()).toList(),
+      };
+
+  Room.fromJson(Map jsonData) {
+    try {
+      x = jsonData["x"];
+      y = jsonData["y"];
+      current = jsonData["current"];
+      visited = jsonData["visited"];
+      entityCount = jsonData["entityCount"];
+      entities = new List<Entity>();
+      (jsonData["entities"] as List).forEach((entity) {
+        entities.add(Entity.fromJson(entity));
+      });
+    } catch (e) {
+      print("error constructing Room from json: $e");
+    }
+  }
 }

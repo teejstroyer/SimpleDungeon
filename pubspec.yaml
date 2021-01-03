@@ -8,6 +8,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider:
+  path_provider:
 dev_dependencies:
   flutter_test:
     sdk: flutter

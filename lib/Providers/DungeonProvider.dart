@@ -108,6 +108,22 @@ class DungeonProvider extends ChangeNotifier {
       else if (minY > 0) room.y -= minY;
     }
   }
+
+  Map<String, dynamic> toJson() => {
+        "rooms": _rooms.map((room) => room.toJson()).toList(),
+      };
+
+  DungeonProvider.fromJson(Map jsonData) {
+    try {
+      _rooms = new List<Room>();
+      (jsonData["rooms"] as List).forEach((room) {
+        _rooms.add(Room.fromJson(room));
+      });
+      _currentRoom = _rooms.firstWhere((i) => i.current);
+    } catch (e) {
+      print("error constructing DungeonProvider from json $e");
+    }
+  }
 }
 
 enum Direction {
