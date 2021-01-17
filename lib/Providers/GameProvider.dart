@@ -62,16 +62,15 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _damageEntity(int damage) {
+  void damageEntity(int damage) {
     if (_currentEntity != null) {
       _currentEntity.takeDamage(damage);
       notifyListeners();
+      if (_currentEntity.health <= 0) setAvailableDirections();
     }
   }
 
-  void damageEntity(int damage) => _damageEntity(damage);
-  void damagePlayer(int damage) => _damagePlayer(damage);
-  void _damagePlayer(int damage) {
+  void damagePlayer(int damage) {
     _player.takeDamage(damage);
     notifyListeners();
   }
@@ -83,22 +82,18 @@ class GameProvider extends ChangeNotifier {
       int pRoll = player.selectedDie.roll();
       int eRoll = _currentEntity.selectedDie.roll();
 
-      var pD = _getDamage(pRoll, player.attack, currentSelectedEntity.defense);
-      var eD = _getDamage(eRoll, currentSelectedEntity.attack, player.defense);
+      var pD = player.getDamage(pRoll);
+      var eD = _currentEntity.getDamage(eRoll);
 
-      _damageEntity(pD);
+      damageEntity(pD);
       gameMessage = "You rolled a $pRoll | $pD DMG";
       lastRoll = pRoll.toString();
       if (_currentEntity.health > 0) {
-        _damagePlayer(eD);
+        damagePlayer(eD);
         gameMessage += "\n${currentSelectedEntity.name} rolled a $eRoll | $eD DMG";
-      } else {
-        setAvailableDirections();
       }
     }
   }
-
-  int _getDamage(int roll1, int attack, int defense) => max(0, roll1 * attack - defense);
 
   void setCurrentRoom(int x, y) {
     var newCurr = _dungeon.rooms.firstWhere((i) => i.x == x && i.y == y, orElse: () => null);

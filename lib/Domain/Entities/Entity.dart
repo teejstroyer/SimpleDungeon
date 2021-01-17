@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:simple_dungeon/Domain/Dice.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_dungeon/Domain/Item.dart';
@@ -16,6 +17,7 @@ class Entity {
   Die selectedDie = Die(DieType.SixSideRegular);
   Item droppableItem;
 
+  int getDamage(int roll) => max(0, roll * attack - defense);
   void takeDamage(int damage) {
     health -= damage;
     if (health < 0) health = 0;
