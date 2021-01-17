@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:simple_dungeon/Domain/Entities/Entity.dart';
-import 'package:simple_dungeon/Providers/DungeonProvider.dart';
 import 'package:simple_dungeon/Providers/GameProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_dungeon/UI/Shared/SpinningButton.dart';
@@ -40,7 +39,6 @@ class RollButton extends StatelessWidget {
 
   void roll(BuildContext context) {
     context.read<GameProvider>().playTurn();
-    context.read<DungeonProvider>().isRoomCleared();
     if (context.read<GameProvider>().showDialog) {
       buildShowGeneralDialog(context);
     }

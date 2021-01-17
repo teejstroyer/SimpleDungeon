@@ -1,4 +1,4 @@
-import 'package:simple_dungeon/Providers/DungeonProvider.dart';
+import 'package:simple_dungeon/Domain/Dungeon.dart';
 import 'package:simple_dungeon/Providers/GameProvider.dart';
 import 'package:simple_dungeon/UI/CurrentRoom.dart';
 import 'package:simple_dungeon/UI/GameInfo.dart';
@@ -106,6 +106,11 @@ class GameBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool canGoDown = context.select<GameProvider, bool>((d) => d.canGoDown);
+    bool canGoUp = context.select<GameProvider, bool>((d) => d.canGoUp);
+    bool canGoLeft = context.select<GameProvider, bool>((d) => d.canGoLeft);
+    bool canGoRight = context.select<GameProvider, bool>((d) => d.canGoRight);
+
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: LayoutBuilder(
@@ -118,22 +123,22 @@ class GameBoard extends StatelessWidget {
               height: gameContainerSize,
               child: Column(
                 children: [
-                  MoveButton(direction: Direction.UP),
+                  MoveButton(direction: Direction.UP, enabled: canGoUp),
                   Container(
                     height: gameCenterSize,
                     child: Row(
                       children: [
-                        MoveButton(direction: Direction.LEFT),
+                        MoveButton(direction: Direction.LEFT, enabled: canGoLeft),
                         Container(
                           height: gameCenterSize,
                           width: gameCenterSize,
                           child: CurrentRoom(),
                         ),
-                        MoveButton(direction: Direction.RIGHT),
+                        MoveButton(direction: Direction.RIGHT, enabled: canGoRight),
                       ],
                     ),
                   ),
-                  MoveButton(direction: Direction.DOWN)
+                  MoveButton(direction: Direction.DOWN, enabled: canGoDown)
                 ],
               ),
             ),

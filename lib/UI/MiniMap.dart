@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:simple_dungeon/Domain/Room.dart';
-import 'package:simple_dungeon/Providers/DungeonProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_dungeon/Providers/GameProvider.dart';
 
 class MiniMap extends StatelessWidget {
   final double miniMapSize;
@@ -11,8 +11,8 @@ class MiniMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var rooms = context.select<DungeonProvider, List<Room>>((d) => d.rooms);
-    var currentRoom = context.select<DungeonProvider, Room>((d) => d.currentRoom);
+    var rooms = context.select<GameProvider, List<Room>>((d) => d.rooms);
+    var currentRoom = context.select<GameProvider, Room>((d) => d.currentRoom);
     double squareSize = miniMapSize / 4;
     double offsetConstant = 1.4 * squareSize; //center of square
 

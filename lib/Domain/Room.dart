@@ -10,6 +10,7 @@ class Room {
   int y;
   bool current = false;
   bool visited = false;
+  bool get cleared => !entities.any((i) => i.health > 0);
   int entityCount;
   List<Entity> entities;
 
