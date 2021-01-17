@@ -1,3 +1,4 @@
+import 'package:simple_dungeon/Domain/Room.dart';
 import 'package:simple_dungeon/Providers/DungeonProvider.dart';
 import 'package:simple_dungeon/Providers/GameProvider.dart';
 import 'package:simple_dungeon/UI/Shared/FancyButton.dart';
@@ -10,8 +11,9 @@ class MoveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool enabled = context.select<DungeonProvider, bool>((d) => d.isDirectionAvailable(direction));
-    bool complete = context.select<DungeonProvider, bool>((d) => d.roomCleared);
+    Room neighbor = context.select<DungeonProvider, Room>((d) => d.getNeighbor(direction));
+    bool roomCleared = context.select<DungeonProvider, bool>((d) => d.roomCleared);
+    bool enabled = neighbor != null && (neighbor.visited || roomCleared);
     IconData icon;
     switch (direction) {
       case Direction.LEFT:
@@ -50,6 +52,7 @@ class MoveButton extends StatelessWidget {
         onPressed: enabled
             ? () {
                 context.read<DungeonProvider>().moveInDirection(direction);
+                context.read<DungeonProvider>().isRoomCleared();
                 context.read<GameProvider>().currentSelectedEntity = null;
               }
             : () => null,

@@ -12,7 +12,7 @@ class MiniMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var rooms = context.select<DungeonProvider, List<Room>>((d) => d.rooms);
-    var currentRoom = context.select<DungeonProvider, Room>((d) => d.getCurrentRoom());
+    var currentRoom = context.select<DungeonProvider, Room>((d) => d.currentRoom);
     double squareSize = miniMapSize / 4;
     double offsetConstant = 1.4 * squareSize; //center of square
 

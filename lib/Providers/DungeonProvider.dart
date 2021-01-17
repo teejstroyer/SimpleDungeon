@@ -5,26 +5,17 @@ import 'package:flutter/material.dart';
 class DungeonProvider extends ChangeNotifier {
   List<Room> _rooms;
   Room _currentRoom;
+  bool roomCleared = false;
 
   DungeonProvider() {
     newLevel(1);
   }
 
-  bool get roomCleared => !_currentRoom.entities.any((i) => i.health > 0);
-
-  void newLevel(int level) {
-    _rooms = <Room>[];
-    generate(Random().nextInt(5) + 5);
-    _rooms[Random().nextInt(_rooms.length)].current = true;
-    _rooms[Random().nextInt(_rooms.length)].visited = true;
-    _currentRoom = _rooms.firstWhere((i) => i.current);
-  }
-
   List<Room> get rooms => [..._rooms].toList();
 
-  Room getCurrentRoom() => _currentRoom;
+  Room get currentRoom => _currentRoom;
 
-  bool isDirectionAvailable(Direction direction) {
+  Room getNeighbor(Direction direction) {
     int x = _currentRoom.x, y = _currentRoom.y;
     switch (direction) {
       case Direction.LEFT:
@@ -40,15 +31,26 @@ class DungeonProvider extends ChangeNotifier {
         y++;
         break;
     }
-    var neighbor = _rooms.firstWhere((i) => i.x == x && i.y == y, orElse: () => null);
-    return neighbor != null && (neighbor.visited || roomCleared);
+    return _rooms.firstWhere((i) => i.x == x && i.y == y, orElse: () => null);
+  }
+
+  void isRoomCleared() async {
+    roomCleared = !_currentRoom.entities.any((i) => i.health > 0);
+    notifyListeners();
+  }
+
+  void newLevel(int level) {
+    _rooms = <Room>[];
+    generate(Random().nextInt(5) + 5);
+    _rooms[Random().nextInt(_rooms.length)].current = true;
+    _currentRoom = _rooms.firstWhere((i) => i.current);
   }
 
   void setCurrentRoom(int x, int y) {
     var newCurr = _rooms.firstWhere((i) => i.x == x && i.y == y, orElse: () => null);
     if (newCurr != null) {
       newCurr.current = true;
-      var curr = getCurrentRoom();
+      var curr = currentRoom;
       if (curr != null) {
         curr.current = false;
         if (curr.visited == false) curr.visited = true;
@@ -59,7 +61,7 @@ class DungeonProvider extends ChangeNotifier {
   }
 
   void moveInDirection(Direction direction) {
-    var curr = getCurrentRoom();
+    var curr = currentRoom;
     int x = 0, y = 0;
     switch (direction) {
       case Direction.DOWN:

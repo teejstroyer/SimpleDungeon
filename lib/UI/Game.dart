@@ -46,6 +46,7 @@ class Game extends StatelessWidget {
                         child: FlatButton(
                           child: Text('HURT ME'),
                           onPressed: () => context.read<GameProvider>().damagePlayer(10),
+                          onLongPress: () => context.read<GameProvider>().damagePlayer(1000),
                         ),
                       ),
                     ),
@@ -56,6 +57,7 @@ class Game extends StatelessWidget {
                         child: FlatButton(
                           child: Text('HEAL ME'),
                           onPressed: () => context.read<GameProvider>().damagePlayer(-10),
+                          onLongPress: () => context.read<GameProvider>().damagePlayer(-1000),
                         ),
                       ),
                     ),
@@ -71,6 +73,7 @@ class Game extends StatelessWidget {
                         child: FlatButton(
                           child: Text('HURT IT'),
                           onPressed: () => context.read<GameProvider>().damageEntity(10),
+                          onLongPress: () => context.read<GameProvider>().damageEntity(1000),
                         ),
                       ),
                     ),
@@ -81,6 +84,7 @@ class Game extends StatelessWidget {
                         child: FlatButton(
                           child: Text('HEAL IT'),
                           onPressed: () => context.read<GameProvider>().damageEntity(-10),
+                          onLongPress: () => context.read<GameProvider>().damageEntity(-100),
                         ),
                       ),
                     ),
