@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttericon/rpg_awesome_icons.dart';
 import 'Entity.dart';
 
 class Dragon extends Entity {
@@ -11,7 +12,7 @@ class Dragon extends Entity {
     super.defense = 10;
     super.health = 150;
     super.maxHealth = 150;
-    super.icon = Icons.ac_unit;
+    super.icon = RpgAwesome.dragon;
     super.color = Colors.deepOrange;
   }
 }

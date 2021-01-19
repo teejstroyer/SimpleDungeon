@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttericon/rpg_awesome_icons.dart';
 import 'Entity.dart';
 
 class Goblin extends Entity {
@@ -12,6 +13,8 @@ class Goblin extends Entity {
     super.health = 100;
     super.maxHealth = 100;
     super.icon = Icons.fire_extinguisher;
+
+    super.icon = RpgAwesome.dinosaur;
     super.color = Colors.green;
   }
 }
